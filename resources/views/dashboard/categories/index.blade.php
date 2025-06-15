@@ -14,16 +14,8 @@
     <div class="mb-5">
         <a href="{{ route('categories.create') }}" class="btn btn-sm btn-outline-primary">Create</a>
     </div>
-    @if (session()->has('success'))
-        <div class="alter alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
-    @if (session()->has('info'))
-        <div class="alter alert-info">
-            {{ session('info') }}
-        </div>
-    @endif
+<x-alert type="success" />
+<x-alert type="info" />
 
     <table border="1" class="table">
         <thead>

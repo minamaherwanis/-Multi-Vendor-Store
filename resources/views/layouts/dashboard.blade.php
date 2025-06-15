@@ -201,7 +201,10 @@
                     </div>
                 </div>
 
-               @include('layouts.partials.nav')
+               {{-- @include('layouts.partials.nav') --}}
+
+               <x-nav/>
+               
             </div>
             <!-- /.sidebar -->
         </aside>
