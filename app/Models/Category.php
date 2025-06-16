@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Validation\Rules\Unique;
 use function PHPUnit\Framework\returnArgument;
 
 class Category extends Model
 {
-
+    use HasFactory ,SoftDeletes;
     protected $fillable = [
 
         'name',
@@ -18,6 +21,19 @@ class Category extends Model
         'status',
         'slug',
     ];
+    public function scopeActive(Builder $builder){
+  
+            $builder->where('status','=','active');
+        }
+    public function scopeFilter(Builder $builder,$filter){
+                if ( $filter['name'] ?? false) {
+            $builder->where('categories.name','like',"%{$filter['name']}%");
+        }
+        if ($filter['status'] ?? false) {
+            $builder->where('categories.status','=',$filter['status']);
+        }
+
+    }
     public static function rules($id = 0)
     {
 

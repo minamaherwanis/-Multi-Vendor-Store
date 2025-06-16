@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\Dashboard\CategoriesController;
 use App\Http\Controllers\ProfileController;
+use Faker\Guesser\Name;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
@@ -8,8 +9,8 @@ use App\Http\Controllers\DashboardController;
 Route::group(
     [
 
-        
-        'middleware'=>['auth']
+
+        'middleware' => ['auth']
 
     ],
     function () {
@@ -19,6 +20,19 @@ Route::group(
             [DashboardController::class, 'index'],
         )->name('dashboard');
 
-        Route::resource('dashboard/categories', CategoriesController::class) ;
+
+        // راوت للعرض العناصر المحذوفة (soft delete)
+        Route::get('dashboard/categories/trash', [CategoriesController::class, 'trash'])
+            ->name('categories.trash');
+
+        // راوت لاسترجاع عنصر محذوف
+        Route::put('dashboard/categories/{category}/restore', [CategoriesController::class, 'restore'])
+            ->name('categories.restore');
+
+        // راوت لحذف عنصر نهائيًا (force delete)
+        Route::delete('dashboard/categories/{category}/force-delete', [CategoriesController::class, 'forceDelete'])
+            ->name('categories.force-delete');
+
+        Route::resource('dashboard/categories', CategoriesController::class);
     }
 );
