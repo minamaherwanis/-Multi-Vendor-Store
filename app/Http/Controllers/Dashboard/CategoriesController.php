@@ -19,12 +19,13 @@ class CategoriesController extends Controller
     {
         $request = request();
 
-        $categories = Category::leftJoin('categories as parents', 'parents.id', '=', 'categories.parent_id')
-            ->select([
-                'categories.*',
-                'parents.name as parent_name'
-            ])
-            ->filter(filter: $request->query())->paginate(1);
+        $categories = Category::with('parent')->filter(filter: $request->query())->paginate();
+        // leftJoin('categories as parents', 'parents.id', '=', 'categories.parent_id')
+        //     ->select([
+        //         'categories.*',
+        //         'parents.name as parent_name'
+        //     ])
+
 
         //  ✅parents بنسخة تانية من نفسه اسمناها categories اربط جدول 
         // ✅ ووصّل بين الاتنين عن طريق

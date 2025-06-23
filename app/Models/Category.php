@@ -11,7 +11,7 @@ use function PHPUnit\Framework\returnArgument;
 
 class Category extends Model
 {
-    use HasFactory ,SoftDeletes;
+    use HasFactory, SoftDeletes;
     protected $fillable = [
 
         'name',
@@ -21,16 +21,45 @@ class Category extends Model
         'status',
         'slug',
     ];
-    public function scopeActive(Builder $builder){
-  
-            $builder->where('status','=','active');
-        }
-    public function scopeFilter(Builder $builder,$filter){
-                if ( $filter['name'] ?? false) {
-            $builder->where('categories.name','like',"%{$filter['name']}%");
+
+    public function children()
+    {
+        return $this->hasMany(Category::class, 'parent_id', 'id');
+
+    }
+    public function parent()
+    {
+
+        return $this->belongsTo(Category::class, 'parent_id', 'id')
+            ->withDefault(
+                [
+                    'name' => 'Main Category'
+                ]
+            );
+
+    }
+    
+
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'category_id', 'id');
+    }
+
+    public function scopeActive(Builder $builder)
+    {
+
+        $builder->where('status', '=', 'active');
+    }
+
+
+
+    public function scopeFilter(Builder $builder, $filter)
+    {
+        if ($filter['name'] ?? false) {
+            $builder->where('categories.name', 'like', "%{$filter['name']}%");
         }
         if ($filter['status'] ?? false) {
-            $builder->where('categories.status','=',$filter['status']);
+            $builder->where('categories.status', '=', $filter['status']);
         }
 
     }

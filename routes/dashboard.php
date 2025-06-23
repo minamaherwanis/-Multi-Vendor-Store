@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\Dashboard\CategoriesController;
+use App\Http\Controllers\Dashboard\ProductsController;
 use App\Http\Controllers\ProfileController;
 use Faker\Guesser\Name;
 use GuzzleHttp\Middleware;
@@ -34,5 +35,6 @@ Route::group(
             ->name('categories.force-delete');
 
         Route::resource('dashboard/categories', CategoriesController::class);
+        Route::resource('dashboard/products', ProductsController::class);
     }
 );
