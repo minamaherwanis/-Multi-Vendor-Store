@@ -33,7 +33,7 @@ class Category extends Model
         return $this->belongsTo(Category::class, 'parent_id', 'id')
             ->withDefault(
                 [
-                    'name' => 'Main Category'
+                    'name' => '-'
                 ]
             );
 

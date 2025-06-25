@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use PhpParser\Node\NullableType;
+use function Laravel\Prompts\select;
 
 
 class CategoriesController extends Controller
@@ -19,18 +20,23 @@ class CategoriesController extends Controller
     {
         $request = request();
 
-        $categories = Category::with('parent')->filter(filter: $request->query())->paginate();
+        $categories = Category::with('parent')
+        ->withCount(['products as products_number' => function($query){
+           $query->where('status','=','active');
+        }]
+        )->filter(filter: $request->query())->paginate();
         // leftJoin('categories as parents', 'parents.id', '=', 'categories.parent_id')
         //     ->select([
         //         'categories.*',
         //         'parents.name as parent_name'
         //     ])
-
-
         //  ✅parents بنسخة تانية من نفسه اسمناها categories اربط جدول 
         // ✅ ووصّل بين الاتنين عن طريق
         // parents.id (رقم الأب)    *الوهمي من الجدول ال اخترعناه*
         // categories.parent_id ( للي بيشاور على الأب)     *الحقيقي *
+
+        // حساب عدد المنتجات المرتبطة بكل كاتيجوري
+        // ->selectRaw('(SELECT COUNT(*) FROM products WHERE category_id = categories.id) as products_count')
         return view('dashboard.categories.index', compact('categories'));
     }
 
@@ -82,9 +88,13 @@ class CategoriesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Category $category)
     {
 
+        
+        return view('dashboard.categories.show',[
+            'category'=>$category
+        ]);
     }
 
     /**
