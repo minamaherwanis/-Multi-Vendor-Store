@@ -15,6 +15,8 @@ Route::group(
 
     ],
     function () {
+        Route::get('profile', action: [\App\Http\Controllers\Dashboard\ProfileController::class ,'edit'] )->name('profile.edit');
+        Route::patch('profile', action: [\App\Http\Controllers\Dashboard\ProfileController::class ,'update'] )->name('profile.update');
 
         Route::get(
             '/dashboard',

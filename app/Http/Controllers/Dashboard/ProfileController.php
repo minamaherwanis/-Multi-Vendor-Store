@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\Intl\Countries;
+use Symfony\Component\Intl\Languages;
 
 
 class ProfileController extends Controller
@@ -13,7 +15,13 @@ class ProfileController extends Controller
     public function edit()
     {
         $user = Auth::user();
-        return view('dashboard.profile.edit', ['user' => $user]);
+        return view('dashboard.profile.edit', 
+        [
+            'user' => $user,
+            'countries' => Countries::getNames('en'),
+           'locales' => Languages::getNames(),
+
+        ]);
     }
 
     /**
@@ -27,6 +35,8 @@ class ProfileController extends Controller
             'birthday' => ['nullable', 'date', 'before:today'],
             'gender' => ['in:male,female'],
             'country' => ['required', 'string', 'size:2'],
+            'local' => ['required', 'string', 'max:5'],
+
         ]);
 
         $user = $request->user();
@@ -45,6 +55,7 @@ class ProfileController extends Controller
             'local',
         ]));
         $profile->save();
+
         return to_route('profile.edit')->with('success', 'Profile Updated!');
 
     }

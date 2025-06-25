@@ -1,5 +1,7 @@
-@props(['name', 'options', 'checked' => false])
-
+@props(['name', 'options', 'checked' => false,'label' => null])
+    @if ($label)
+        <label class="form-label d-block">{{ $label }}</label>
+    @endif
 @foreach ($options as $value => $text)
     <div class="form-check">
         <input 
