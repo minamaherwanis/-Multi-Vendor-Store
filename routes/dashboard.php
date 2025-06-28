@@ -35,7 +35,6 @@ Route::group(
         // راوت لحذف عنصر نهائيًا (force delete)
         Route::delete('dashboard/categories/{category}/force-delete', [CategoriesController::class, 'forceDelete'])
             ->name('categories.force-delete');
-
         Route::resource('dashboard/categories', CategoriesController::class);
         Route::resource('dashboard/products', ProductsController::class);
     }

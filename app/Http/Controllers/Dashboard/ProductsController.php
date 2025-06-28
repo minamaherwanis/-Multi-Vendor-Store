@@ -3,7 +3,12 @@
 namespace App\Http\Controllers\Dashboard;
 use App\Models\Product;
 use App\Http\Controllers\Controller;
+use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
+use Str;
+use Illuminate\Support\Facades\Storage;
+
 
 class ProductsController extends Controller
 {
@@ -45,16 +50,64 @@ class ProductsController extends Controller
      */
     public function edit(string $id)
     {
-       $products=Product::findOrFail($id);
+       $product=Product::findOrFail($id);
+       $tags=implode( ' , ',$product->tags->pluck('name')->toArray());
+
+        return View('dashboard.products.edit',compact('tags','product'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
+   public function update(Request $request, Product $product)
+{
+    // تحديث باقي بيانات المنتج ماعدا التاجز والصورة
+    $data = $request->except(['tags', 'image']);
+
+    // التعامل مع التاجز
+    $tags = explode(',', $request->input('tags'));
+    $tags_ids = [];
+
+    foreach ($tags as $tag_name) {
+        $slug = Str::slug($tag_name);
+        $tag = Tag::where('slug', $slug)->first();
+
+        if (!$tag) {
+            $tag = Tag::create([
+                'name' => $tag_name,
+                'slug' => $slug,
+            ]);
+        }
+
+        $tags_ids[] = $tag->id;
     }
+
+    $product->tags()->sync($tags_ids);
+
+    // معالجة الصورة
+    $old_image = $product->image;
+
+    if ($request->hasFile('image')) {
+        $file = $request->file('image');
+        $path = $file->store('uploads', 'public');
+        $data['image'] = $path;
+
+        // حذف الصورة القديمة
+        if ($old_image) {
+            Storage::disk('public')->delete($old_image);
+        }
+    } else {
+        // احتفظ بالصورة القديمة
+        $data['image'] = $old_image;
+    }
+
+    // تحديث بيانات المنتج
+    $product->update($data);
+
+    return redirect()->route('products.index')->with('success', 'تم التحديث بنجاح');
+}
+
+    
 
     /**
      * Remove the specified resource from storage.

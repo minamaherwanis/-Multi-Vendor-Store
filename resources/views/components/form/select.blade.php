@@ -1,21 +1,3 @@
-{{-- <div class="mb-3">
-    <label for="{{ $id ?? $name }}" class="form-label">{{ $label }}</label>
-
-    <select
-        name="{{ $name }}"
-        {{ $attributes->class([
-                'form-control',
-                'is-invalid' => $errors->has($name)
-            ]) }}
-
-        @foreach($options as $value => $text)
-            <option value="{{  $value }}" @elected($value==$selected)>
-                {{$text}}
-            </option>
-        @endforeach
-    </select>
-
-<x-form.validation-feedback :name="$name"/> --}}
 @props([
     'name',
     'label' => null,
@@ -49,6 +31,11 @@
         @endforeach
     </select>
 
-    {{-- <x-form.validation-feedback :name="$name" /> --}}
+@error($name)
+    <div class="invalid-feedback d-block">
+        {{ $message }}
+    </div>
+@enderror
+
 </div>
 
