@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Facade;
+
 return [
 
     /*
@@ -66,6 +68,7 @@ return [
     */
 
     'timezone' => 'UTC',
+    'currency' => 'USD',
 
     /*
     |--------------------------------------------------------------------------
@@ -122,5 +125,10 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+    'aliases' =>Facade::defaultAliases()->merge( [
+        'Currency' => App\Helpers\Currency::class,
+
+    ])->toArray(),
+
 
 ];
