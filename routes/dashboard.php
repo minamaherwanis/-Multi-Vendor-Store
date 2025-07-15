@@ -6,12 +6,13 @@ use Faker\Guesser\Name;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
+use App\Http\Middleware\CheckUserType;
 
 Route::group(
     [
 
 
-        'middleware' => ['auth']
+        'middleware' => ['auth','checkUserType:super-admin,admin']
 
     ],
     function () {
