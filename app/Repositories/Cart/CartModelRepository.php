@@ -12,35 +12,44 @@ use Illuminate\Support\Facades\Auth;
 
 class CartModelRepository implements CartRepository
 {
-
+    protected $items;
+    public function __construct()
+    {
+        $this->items = collect([]);
+    }
 
 
 
     public function get(): Collection
     {
-        return Cart::with('products')->get();
+        if (!$this->items->count()) {
+            $this->items = Cart::with('products')->get();
+        }
+        return $this->items;
     }
 
     public function add(Product $product, $quantity = 1)
     {
-        $item= Cart::where('product_id', $product->id)
+        $item = Cart::where('product_id', $product->id)
             ->first();
-            if (!$item) {
-         return Cart::create([
-            'user_id' => Auth::id(),
-            'product_id' => $product->id,
-            'quantity' => $quantity,
+        if (!$item) {
+            $item = Cart::create([
+                'user_id' => Auth::id(),
+                'product_id' => $product->id,
+                'quantity' => $quantity,
 
 
-        ]);  
-            }
-          return  $item->increment('quantity',$quantity);
+            ]);
+            $this->get()->push($item);
+            return $item;
+        }
+        return $item->increment('quantity', $quantity);
 
     }
 
-    public function update(Product $product, $quantity)
+    public function update($id, $quantity)
     {
-        return Cart::where('product_id', $product->id)
+        return Cart::where('id', $id)
             ->update(['quantity' => $quantity]);
     }
 
@@ -57,10 +66,11 @@ class CartModelRepository implements CartRepository
 
     public function total()
     {
-        return (float) Cart::join('products', 'products.id', '=', 'carts.product_id')
-            ->selectRaw('SUM(products.price * carts.quantity) as total')
-            ->value('total');
+        return $this->get()->sum(function ($item) {
+            return $item->quantity * $item->products->price;
+        });
     }
+
 
 
 }
