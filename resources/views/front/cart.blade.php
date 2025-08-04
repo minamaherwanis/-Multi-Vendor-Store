@@ -132,4 +132,5 @@
     <script src="{{ asset('js/cart.js') }}"></script>
     @endpush
 
+
 </x-front-layout>

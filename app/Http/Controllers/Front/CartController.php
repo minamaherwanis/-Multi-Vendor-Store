@@ -10,9 +10,14 @@ use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+       protected $cart;
+
+    public function __construct(CartRepository $cart)
+    {
+        $this->cart = $cart;
+    }
+
+ 
     public function index(CartRepository $cart)
     {
 
@@ -26,19 +31,26 @@ class CartController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-public function store(Request $request,CartRepository $cart)
-{
-    $request->validate([
-        'product_id' => ['required', 'integer', 'exists:products,id'],
-        'quantity' => ['nullable', 'integer', 'min:1'],
-    ]);
+    public function store(Request $request)
+    {
+        $request->validate([
+            'product_id' => ['required', 'int', 'exists:products,id'],
+            'quantity' => ['nullable', 'int', 'min:1'],
+        ]);
 
-    $product = Product::findOrFail($request->post('product_id'));
+        $product = Product::findOrFail($request->post('product_id'));
+        $this->cart->add($product, $request->post('quantity'));
 
-
-    $cart->add($product, $request->post('quantity')); 
-    return redirect()->route('cart.index')->with('success','Product added to cart!');
-}
+        if ($request->expectsJson()) {
+            
+            return response()->json([
+                'message' => 'Item added to cart!',
+            ], 201);
+        }
+        
+        return redirect()->route('cart.index')
+            ->with('success', 'Product added to cart!');
+    }
 
 
     /**
@@ -60,24 +72,23 @@ public function store(Request $request,CartRepository $cart)
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, CartRepository $cart)
+     public function update(Request $request, $id)
     {
-          $request->validate([
-        'product_id' => ['required', 'integer', 'exists:products,id'],
-        'quantity' => ['nullable', 'integer', 'min:1'],
-    ]);
+        $request->validate([
+            'quantity' => ['required', 'int', 'min:1'],
+        ]);
 
-    $product = Product::findOrFail($request->post('product_id'));
-
-
-     $cart->update($product, $request->post('quantity')); 
+        $this->cart->update($id, $request->post('quantity'));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CartRepository $cart, $id)
+    public function destroy( $id)
     {
-        $cart->delete($id); 
+       $this->cart->delete($id); 
+       return[
+        'message'=>'Item deleted!'
+       ];
     }
 }
