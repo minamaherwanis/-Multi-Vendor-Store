@@ -5,7 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use OrderItem;
+use App\Models\OrderItem;
 use PhpParser\Node\Stmt\Static_;
 
 class Order extends Model
