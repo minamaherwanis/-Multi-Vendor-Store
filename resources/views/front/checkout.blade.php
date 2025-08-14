@@ -236,7 +236,6 @@
                                             <div class="col-md-12">
                                                 <div class="steps-form-btn button">
                                                     <button type="button" class="btn" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">previous</button>
-
                                                     <a href="javascript:void(0)" class="btn btn-alt">Save & Continue</a>
                                                 </div>
                                             </div>
@@ -286,11 +285,11 @@
                                 </div>
                                 <div class="total-price shipping">
                                     <p class="value">Subotal Price:</p>
-                                    <p class="price">$10.50</p>
+                                    <p class="price">$0.00</p>
                                 </div>
                                 <div class="total-price discount">
                                     <p class="value">Subotal Price:</p>
-                                    <p class="price">$10.00</p>
+                                    <p class="price">$0.00</p>
                                 </div>
                             </div>
 

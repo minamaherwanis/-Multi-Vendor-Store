@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Front;
 use App\Events\OrderCreated;
 use App\Exceptions\InvalidOrderException;
 use App\Http\Controllers\Controller;
+use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Repositories\Cart\CartRepository;
@@ -16,15 +17,19 @@ use Throwable;
 
 class CheckoutController extends Controller
 {
-    public function create(CartRepository $cart)
-    {
-        if ($cart->get()->count() == 0) {
-        }
-        return view('front.checkout', [
-            'cart' => $cart,
-            'countries' => Countries::getNames(),
-        ]);
+public function create(CartRepository $cart)
+{
+    if ($cart->get()->count() == 0) {
+        return redirect()->route('home')
+                         ->with('error', 'Your cart is empty. Please add items before checkout.');
     }
+
+    return view('front.checkout', [
+        'cart' => $cart,
+        'countries' => Countries::getNames(),
+    ]);
+}
+
 
     public function store(Request $request, CartRepository $cart)
     {
@@ -48,6 +53,8 @@ class CheckoutController extends Controller
                     'user_id' => Auth::id(),
                     'payment_method' => 'cod',
                 ]);
+                
+
 
                 foreach ($cart_items as $item) {
                     OrderItem::create([
@@ -63,18 +70,19 @@ class CheckoutController extends Controller
                     $address['type'] = $type;
                     $order->addresses()->create($address);
 
-                }
+                }  
+                 
+
             }
-
             DB::commit();
-
-            //event('order.created', $order, Auth::user());
-
+            // event('order.created',$order,Auth::user());
+            event(new OrderCreated(order: $order));
+      
         } catch (Throwable $e) {
             DB::rollBack();
             throw $e;
         }
 
-        return redirect()->route('home');
+        return redirect()->route(route: 'home');
     }
 }

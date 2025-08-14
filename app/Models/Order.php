@@ -28,7 +28,8 @@ class Order extends Model
         return $this->belongsToMany(Product::class, 'order_items',
          'order_id', 'product_id', 'id', 'id')
          ->using(class: OrderItem::class)
-         ->withPivot('product_name','price','quantity','options');
+         ->as('order_item')
+         ->withPivot('product_name','price','quantity','option');
     }
     public function addresses(){
         return $this->hasMany(OrderAddress::class);
