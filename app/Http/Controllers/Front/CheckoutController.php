@@ -83,6 +83,6 @@ public function create(CartRepository $cart)
             throw $e;
         }
 
-        return redirect()->route(route: 'home');
+       // return redirect()->route(route: 'home');
     }
 }
