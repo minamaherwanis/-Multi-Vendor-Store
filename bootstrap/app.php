@@ -15,9 +15,10 @@ return Application::configure(basePath: dirname(__DIR__))
             'checkUserType' => \App\Http\Middleware\CheckUserType::class,
         ]);
 
-        // ✅ ميدل وير بيشتغل فقط على web.php
+        // ✅web.php ميدل وير بيشتغل فقط على 
         $middleware->web([
             \App\Http\Middleware\UpdateUserLastActiveAt::class,
+            \App\Http\Middleware\MarkNotificationAsRead::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Events\OrderCreated;
 use App\Models\Cart;
 use App\Repositories\Cart\CartModelRepository;
 use App\Repositories\Cart\CartRepository;
@@ -22,7 +23,7 @@ class EmptyCart
     /**
      * Handle the event.
      */
-    public function handle(): void
+    public function handle(OrderCreated $event): void
     {
         $this->cart->empty();
     }

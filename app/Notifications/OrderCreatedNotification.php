@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Log;
+use PhpParser\Builder\Function_;
 
 class OrderCreatedNotification extends Notification
 {
@@ -16,9 +17,9 @@ class OrderCreatedNotification extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct( $order)
+    public function __construct($order)
     {
-        $this->order=$order;
+        $this->order = $order;
     }
 
     /**
@@ -26,25 +27,25 @@ class OrderCreatedNotification extends Notification
      *
      * @return array<int, string>
      */
-public function via($notifiable)
-{
-    return ['mail'];
+    public function via($notifiable)
+    {
+        return ['mail', 'database'];
 
-    // $channels = ['database'];
-    // if ($notifiable->notification_preferences['order_created']['sms'] ?? false) {
-    //     $channels[] = 'vonage';
-    // }
+        // $channels = ['database'];
+        // if ($notifiable->notification_preferences['order_created']['sms'] ?? false) {
+        //     $channels[] = 'vonage';
+        // }
 
-    // if ($notifiable->notification_preferences['order_created']['mail'] ?? false) {
-    //     $channels[] = 'mail';
-    // }
+        // if ($notifiable->notification_preferences['order_created']['mail'] ?? false) {
+        //     $channels[] = 'mail';
+        // }
 
-    // if ($notifiable->notification_preferences['order_created']['broadcast'] ?? false) {
-    //     $channels[] = 'broadcast';
-    // }
+        // if ($notifiable->notification_preferences['order_created']['broadcast'] ?? false) {
+        //     $channels[] = 'broadcast';
+        // }
 
-    // return $channels;
-}
+        // return $channels;
+    }
 
 
     /**
@@ -52,19 +53,29 @@ public function via($notifiable)
      */
     public function toMail(object $notifiable): MailMessage
     {
-            Log::info('Sending OrderCreatedNotification', [
-        'order_id' => $this->order->id,
-        'to' => $notifiable->email,
-    ]);
-        $addr=$this->order->billingAddress;
+        $addr = $this->order->billingAddress;
+
         return (new MailMessage)
-            ->subject("New Order #{{$this->order->number}}")
-            ->from('no-reply@multi-store.com','multi-vendor-store')
+            ->subject("New Order #{$this->order->number}")
+            ->from('no-reply@multi-store.com', 'multi-vendor-store')
             ->greeting("Hi {$notifiable->name},")
-            ->line("new order (#{{$this->order->number}}) created by {$addr->name} from {$addr->country_name}.")
+            ->line("New order (#{$this->order->number}) created by {$addr->name} from {$addr->country_name}.")
             ->action('View Order', url('/dashboard'))
             ->line('Thank you for using our application!');
     }
+    public function toDatabase($notifiable)
+    {
+                $addr = $this->order->billingAddress;
+
+        return [
+            'body' => "New order (#{$this->order->number}) created by {$addr->name} from {$addr->country_name}.",
+            'icon' => 'fas fa-file',
+            'url' => url('/dashboard'),
+            'order_id' => $this->order->id,
+        ];
+    }
+
+
 
     /**
      * Get the array representation of the notification.
