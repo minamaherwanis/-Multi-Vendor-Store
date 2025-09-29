@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Store;
 use App\Models\User;
+use App\Models\Admin;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -24,9 +25,10 @@ class DatabaseSeeder extends Seeder
         // ]);
         //  ده كول للكلاس الuserseeder اسمه علشان ينفز الاتنين فانكشن ال كتبناهم
 
-        Store::factory(5)->create();
-        Category::factory(10)->create();
-        Product::factory(100)->create();
+        // Store::factory(5)->create();
+        // Category::factory(10)->create();
+        // Product::factory(100)->create();
+        Admin::factory(3)->create();
         //$this->call(UserSeeder::class);
 
       //  php artisan db:seed

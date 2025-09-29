@@ -4,10 +4,11 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Front\CartController;
 use App\Http\Controllers\Front\HomeController;
 use App\Http\Controllers\Front\ProductsController;
-use App\Http\Controllers\ProfileController;
 use GuzzleHttp\Promise\Create;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Front\CheckoutController;
+use App\Http\Controllers\Dashboard\ProfileController;
+
 
 
 // Route::get('/', function () {

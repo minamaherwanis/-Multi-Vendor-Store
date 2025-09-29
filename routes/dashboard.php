@@ -1,23 +1,24 @@
 <?php
 use App\Http\Controllers\Dashboard\CategoriesController;
 use App\Http\Controllers\Dashboard\ProductsController;
-use App\Http\Controllers\ProfileController;
 use Faker\Guesser\Name;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Middleware\CheckUserType;
+use App\Http\Controllers\Dashboard\ProfileController;
 
 Route::group(
     [
 
 
-        'middleware' => ['auth','checkUserType:super-admin,admin']
+        'middleware' => ['auth:admin'],
+        'prefix'=>'admin'
 
     ],
     function () {
-        Route::get('profile', action: [\App\Http\Controllers\Dashboard\ProfileController::class ,'edit'] )->name('profile.edit');
-        Route::patch('profile', action: [\App\Http\Controllers\Dashboard\ProfileController::class ,'update'] )->name('profile.update');
+    Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('profile', [ProfileController::class, 'update'])->name('profile.update');
 
         Route::get(
             '/dashboard',
