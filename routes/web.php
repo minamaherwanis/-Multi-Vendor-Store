@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Front\Auth\TwoFactorAuthenticationController;
 use App\Http\Controllers\Front\CartController;
@@ -38,5 +39,3 @@ Route::middleware('auth')->group(function () {
 // require __DIR__ . '/auth.php';
 
 require __DIR__ . '/dashboard.php';
-
-
