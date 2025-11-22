@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Front\Auth\TwoFactorAuthenticationController;
 use App\Http\Controllers\Front\CartController;
+use App\Http\Controllers\Front\CurrencyConverterController;
 use App\Http\Controllers\Front\HomeController;
 use App\Http\Controllers\Front\ProductsController;
 use GuzzleHttp\Promise\Create;
@@ -35,6 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+Route::post('/currency',[CurrencyConverterController::class,'store'])->name('currency.store');
 
 // require __DIR__ . '/auth.php';
 
