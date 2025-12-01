@@ -1,3 +1,7 @@
+@php
+    use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+@endphp
+
 <!DOCTYPE html>
 <html class="no-js" lang="zxx">
 
@@ -58,7 +62,6 @@
                                                 <option value="EUR" @selected('EUR' == session('currency_code'))>€ EUR</option>
                                                 <option value="PHP" @selected('PHP' == session('currency_code'))>₹ PHP</option>
                                                 <option value="CAD" @selected('CAD' == session('currency_code'))>€ CAD</option>
-                                                <option value="NZD" @selected('SAR' == session('currency_code'))>¥ NZD</option>
                                                 <option value="RUB" @selected('RUB' == session('currency_code'))>৳ RUB</option>
                                             </select>
                                         </form>
@@ -66,16 +69,17 @@
                                 </li>
                                 <li>
                                     <div class="select-position">
-                                        <select id="select5">
-                                            <option value="0" selected>English</option>
-                                            <option value="1">Español</option>
-                                            <option value="2">Filipino</option>
-                                            <option value="3">Français</option>
-                                            <option value="4">العربية</option>
-                                            <option value="5">हिन्दी</option>
-                                            <option value="6">বাংলা</option>
+                                        <select onchange="window.location.href=this.value">
+                                            @foreach (LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                                                <option
+                                                    value="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}"
+                                                    @if (app()->getLocale() == $localeCode) selected @endif>
+                                                    {{ $properties['native'] }}
+                                                </option>
+                                            @endforeach
                                         </select>
                                     </div>
+
                                 </li>
                             </ul>
                         </div>
@@ -83,42 +87,45 @@
                     <div class="col-lg-4 col-md-4 col-12">
                         <div class="top-middle">
                             <ul class="useful-links">
-                                <li><a href="index.html">Home</a></li>
-                                <li><a href="about-us.html">About Us</a></li>
-                                <li><a href="contact.html">Contact Us</a></li>
+                                <li><a href="index.html">{{ trans('Home') }}</a></li>
+                                <li><a href="about-us.html">{{ trans('About Us') }}</a></li>
+                                <li><a href="contact.html">{{ trans('Contact Us') }}</a></li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-4 col-12">
-<div class="top-end">
-                         @auth
-                            <div class="user">
-                                <i class="lni lni-user"></i>
-                                {{ Auth::user()->name }}
-                            </div>
-                            <ul class="user-login">
-                                <li>
-                                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout').submit()">Sign Out</a>
-                                </li>
-                                <form action="{{ route('logout') }}" id="logout" method="post" style="display:none">
-                                    @csrf
-                                </form>
-                            </ul>
+                        <div class="top-end">
+                            @auth
+                                <div class="user">
+                                    <i class="lni lni-user"></i>
+                                    {{ Auth::user()->name }}
+                                </div>
+                                <ul class="user-login">
+                                    <li>
+                                        <a href="{{ route('logout') }}"
+                                            onclick="event.preventDefault(); document.getElementById('logout').submit()">Sign
+                                            Out</a>
+                                    </li>
+                                    <form action="{{ route('logout') }}" id="logout" method="post"
+                                        style="display:none">
+                                        @csrf
+                                    </form>
+                                </ul>
                             @else
-                            <div class="user">
-                                <i class="lni lni-user"></i>
-                                {{ __('Hello')}}
-                            </div>
-                            <ul class="user-login">
-                                <li>
-                                    <a href="{{ route('login') }}">{{ Lang::get('Sign In') }}</a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            </ul>
+                                <div class="user">
+                                    <i class="lni lni-user"></i>
+                                    {{ __('Hello') }}
+                                </div>
+                                <ul class="user-login">
+                                    <li>
+                                        <a href="{{ route('login') }}">{{ trans('Sign In') }}</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    </li>
+                                </ul>
                             @endauth
-</div>
+                        </div>
 
                     </div>
                 </div>
@@ -179,7 +186,7 @@
                                         <span class="total-items">0</span>
                                     </a>
                                 </div>
-                                <x-cart-menu/>
+                                <x-cart-menu />
                             </div>
                         </div>
                     </div>
@@ -319,7 +326,7 @@
 
 
     <!-- Start Breadcrumbs -->
-        {{$breadcrumb ?? ''}}
+    {{ $breadcrumb ?? '' }}
     <!-- End Breadcrumbs -->
 
 

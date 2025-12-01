@@ -11,6 +11,8 @@ use GuzzleHttp\Promise\Create;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Front\CheckoutController;
 use App\Http\Controllers\Dashboard\ProfileController;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+
 
 
 
@@ -18,6 +20,11 @@ use App\Http\Controllers\Dashboard\ProfileController;
 //     return view('welcome');
 // })->name('home');
 
+Route::group(['prefix' => LaravelLocalization::setLocale(),
+	'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]
+],
+ function()
+ {
 Route::get(  '/',   [HomeController::class, 'index'])->name('home');
 
 Route::get('/products', [ProductsController::class, 'index'])->name('frontend.products.index');
@@ -30,13 +37,14 @@ Route::post('checkout', [CheckoutController::class, 'store']);
 
 Route::get('auth/user/2fa', [TwoFactorAuthenticationController::class, 'index'])->name('front.2fa');
 
-
+Route::post('/currency',[CurrencyConverterController::class,'store'])->name('currency.store');
+});
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-Route::post('/currency',[CurrencyConverterController::class,'store'])->name('currency.store');
+
 
 // require __DIR__ . '/auth.php';
 
