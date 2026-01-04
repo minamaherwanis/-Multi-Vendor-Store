@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\Dashboard\CategoriesController;
 use App\Http\Controllers\Dashboard\ProductsController;
+use App\Http\Controllers\Dashboard\RolesController;
 use Faker\Guesser\Name;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
@@ -12,7 +13,7 @@ Route::group(
     [
 
 
-        'middleware' => ['auth:admin'],
+        'middleware' => ['auth:admin,web'],
         'prefix'=>'admin'
 
     ],
@@ -37,7 +38,12 @@ Route::group(
         // راوت لحذف عنصر نهائيًا (force delete)
         Route::delete('dashboard/categories/{category}/force-delete', [CategoriesController::class, 'forceDelete'])
             ->name('categories.force-delete');
-        Route::resource('dashboard/categories', CategoriesController::class);
-        Route::resource('dashboard/products', ProductsController::class);
+        // Route::resource('dashboard/categories', CategoriesController::class);
+        // Route::resource('dashboard/products', ProductsController::class);
+        Route::resources([
+            'products'=>ProductsController::class,
+            'categories'=>CategoriesController::class,
+            'roles'=>RolesController::class,
+        ]);
     }
 );

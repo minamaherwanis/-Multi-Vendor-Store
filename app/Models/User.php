@@ -9,11 +9,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Concerns\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
    
-    use HasFactory, Notifiable,TwoFactorAuthenticatable,HasApiTokens;
+    use HasFactory, Notifiable,TwoFactorAuthenticatable,HasApiTokens,HasRoles;
     protected $fillable = [
         'name',
         'email',

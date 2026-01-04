@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Exception;
+use Illuminate\Container\Attributes\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use PhpParser\Node\NullableType;
 use function Laravel\Prompts\select;
-
+use Illuminate\Support\Facades\Gate;
 
 class CategoriesController extends Controller
 {
@@ -18,6 +19,9 @@ class CategoriesController extends Controller
      */
     public function index()
     {
+        if (!Gate::allows('categories.view')) {
+            abort(403);
+        }
         $request = request();
 
         $categories = Category::with('parent')
@@ -30,8 +34,8 @@ class CategoriesController extends Controller
         //         'categories.*',
         //         'parents.name as parent_name'
         //     ])
-        //  ✅parents بنسخة تانية من نفسه اسمناها categories اربط جدول 
-        // ✅ ووصّل بين الاتنين عن طريق
+        //   parents بنسخة تانية من نفسه اسمناها categories اربط جدول 
+        //  ووصّل بين الاتنين عن طريق
         // parents.id (رقم الأب)    *الوهمي من الجدول ال اخترعناه*
         // categories.parent_id ( للي بيشاور على الأب)     *الحقيقي *
 
@@ -45,6 +49,8 @@ class CategoriesController extends Controller
      */
     public function create()
     {
+          Gate::authorize('categories.create');
+
         $parents = category::all();
         $category = new Category();
         return view('dashboard.categories.create', compact('parents', 'category'));
@@ -55,6 +61,7 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize('categories.create');
         $request->validate(Category::rules());
 
         $request->merge([
@@ -90,6 +97,7 @@ class CategoriesController extends Controller
      */
     public function show(Category $category)
     {
+              Gate::authorize('categories.view');
 
         
         return view('dashboard.categories.show',[
@@ -102,6 +110,8 @@ class CategoriesController extends Controller
      */
     public function edit(string $id)
     {
+                Gate::authorize('categories.update');
+
         try {
             $category = Category::findOrFail($id);
         } catch (Exception $th) {
@@ -127,6 +137,8 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, string $id)
     {
+                        Gate::authorize('categories.update');
+
         $request->validate(Category::rules($id));
 
         $singleCategoryFromDB = Category::findOrFail($id);
@@ -159,6 +171,8 @@ class CategoriesController extends Controller
      */
     public function destroy(string $id)
     {
+                        Gate::authorize('categories.delete');
+
         $ssinglecategoryfromDB = Category::findOrFail($id);
         $ssinglecategoryfromDB->delete();
 
