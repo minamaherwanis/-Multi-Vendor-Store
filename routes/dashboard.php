@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\Dashboard\CategoriesController;
+use App\Http\Controllers\Dashboard\ImportProductsController;
 use App\Http\Controllers\Dashboard\ProductsController;
 use App\Http\Controllers\Dashboard\RolesController;
 use Faker\Guesser\Name;
@@ -40,7 +41,10 @@ Route::group(
             ->name('categories.force-delete');
         // Route::resource('dashboard/categories', CategoriesController::class);
         // Route::resource('dashboard/products', ProductsController::class);
-        Route::resources([
+    Route::get('products/import', [ImportProductsController::class, 'create'])
+        ->name('products.import');
+    Route::post('products/import', [ImportProductsController::class, 'store']); 
+           Route::resources([
             'products'=>ProductsController::class,
             'categories'=>CategoriesController::class,
             'roles'=>RolesController::class,
