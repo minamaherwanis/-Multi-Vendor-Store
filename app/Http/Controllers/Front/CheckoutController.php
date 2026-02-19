@@ -46,6 +46,9 @@ public function create(CartRepository $cart)
 
         DB::beginTransaction();
         try {
+            $orders = [];
+
+            
             foreach ($items as $store_id => $cart_items) {
                 $order = Order::create([
                     
@@ -83,6 +86,6 @@ public function create(CartRepository $cart)
             throw $e;
         }
 
-       // return redirect()->route(route: 'home');
+        return redirect()->route( 'orders.payments.create',$order->id);
     }
 }

@@ -29,3 +29,5 @@ Route::Post('auth/access-tokens', [AccessTokensController::class,'store'])
 ->middleware('guest:sanctum');
 Route::delete('auth/access-tokens/{token?}', [AccessTokensController::class,'destroy'])
 ->middleware('auth:sanctum');
+Route::get('deliveries/{delivery}',[DeliveriesController::class ,'show']);
+Route::put('deliveries/{delivery}',[DeliveriesController::class ,'update']);

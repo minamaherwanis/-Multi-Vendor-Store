@@ -8,7 +8,10 @@ use App\Http\Controllers\Front\Auth\TwoFactorAuthenticationController;
 use App\Http\Controllers\Front\CartController;
 use App\Http\Controllers\Front\CurrencyConverterController;
 use App\Http\Controllers\Front\HomeController;
+use App\Http\Controllers\Front\OrdersController;
+use App\Http\Controllers\Front\PaymentsController;
 use App\Http\Controllers\Front\ProductsController;
+use App\Http\Controllers\StripeWebhooksController;
 use GuzzleHttp\Promise\Create;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Front\CheckoutController;
@@ -53,6 +56,15 @@ Route::get('auth/{provider}/callback', [SocialLoginController::class, 'callback'
 
 Route::get('auth/{provider}/user', [\App\Http\Controllers\SocialController::class, 'index']);
 
+Route::get('orders/{order}/pay',[PaymentsController::class,'create'])
+->name('orders.payments.create');
+Route::post('orders/{order}/stripe/payment-intent', [PaymentsController::class, 'createStripePaymentIntent'])
+    ->name('stripe.paymentIntent.create');
+Route::get('orders/{order}/pay/stripe/callback', [PaymentsController::class, 'confirm'])
+    ->name('stripe.return');
+    
+Route::any('stripe/webhook', [StripeWebhooksController::class, 'handle']);
+Route::get('/orders/{order}',[OrdersController::class,'show'])->name('orders.show');
 
 // require __DIR__ . '/auth.php';
 

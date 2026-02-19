@@ -23,6 +23,9 @@ class Order extends Model
     {
         return $this->belongsTo(Store::class, 'store_id', 'id');
     }
+    public function items(){
+        return $this->hasMany(OrderItem::class ,'order_id');
+    }
     public function products()
     {
         return $this->belongsToMany(Product::class, 'order_items',
@@ -33,6 +36,9 @@ class Order extends Model
     }
     public function addresses(){
         return $this->hasMany(OrderAddress::class);
+    }
+    public function delivery(){
+        return $this->hasOne(Delivery::class);
     }
     public function billingAddress(){
         return $this->hasOne(OrderAddress::class,'order_id','id')
