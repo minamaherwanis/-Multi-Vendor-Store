@@ -23,36 +23,60 @@
 
     <section class="checkout-wrapper section">
         <div class="container">
-            <!-- عنصر الخريطة -->
-            <div id="map" style="height:50vh; width:100%;"></div>
+            <div id="map" style="height: 50vh;"></div>
         </div>
     </section>
 
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
     <script>
+        var map, marker;
+
+        // Enable pusher logging - don't include this in production
+        Pusher.logToConsole = true;
+
+        var pusher = new Pusher('d372510b97fe6b07fdbb', {
+            cluster: 'eu',
+            channelAuthorization: {
+                endpoint: "/broadcasting/auth",
+                headers: {
+                    "X-CSRF-Token": "{{ csrf_token() }}"
+                }
+            }
+        });
+
+        var channel = pusher.subscribe('private-deliveries.{{ $order->id }}');
+
+        channel.bind('location-updated', function(data) {
+            alert("New location: " + data.latitude + ", " + data.longitude);
+            if (marker) {
+                marker.setPosition({
+                    lat: Number(data.latitude),
+                    lng: Number(data.longitude)
+                });
+            }
+        });
+
+        // Initialize and add the map
         function initMap() {
-            // deliveryالإحداثيات من علاقة 
             const location = {
                 lat: Number("{{ $order->delivery->latitude }}"),
                 lng: Number("{{ $order->delivery->longitude }}")
             };
 
-            // إنشاء الخريطة
-            const map = new google.maps.Map(document.getElementById("map"), {
-                zoom: 15,
+            map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 11,
                 center: location,
             });
 
-            // إضافة ماركر
-            new google.maps.Marker({
+            marker = new google.maps.Marker({
                 position: location,
                 map: map,
-                title: "Delivery Location"
             });
         }
 
         window.initMap = initMap;
     </script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDPQG8tc7i_C_L6E-0OrASnDFjqaG52bJc&callback=initMap&v=weekly" defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ config('services.google_maps.maps_key') }}" defer></script>
 
 </x-front-layout>

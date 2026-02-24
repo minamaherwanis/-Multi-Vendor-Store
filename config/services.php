@@ -52,13 +52,16 @@ return [
         'client_id' => env('X_CLIENT_ID'),
         'client_secret' => env('X_CLIENT_SECRET'),
         'redirect' => env('APP_URL') . '/auth/x/callback',
-            ],
+    ],
     'stripe' => [
-            'publishable_key' => env('STRIPE_PUBLISHABLE_KEY'),
-            'secret_key' => env('STRIPE_SECRET_KEY'),
-        ],
-   
+        'publishable_key' => env('STRIPE_PUBLISHABLE_KEY'),
+        'secret_key' => env('STRIPE_SECRET_KEY'),
+    ],
 
+    'google_maps' => [
+        'maps_key' => env('GOOGLE_MAPS_KEY')
+
+    ],
 
 
 

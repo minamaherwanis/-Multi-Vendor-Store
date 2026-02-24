@@ -64,7 +64,7 @@ Route::get('orders/{order}/pay/stripe/callback', [PaymentsController::class, 'co
     ->name('stripe.return');
     
 Route::any('stripe/webhook', [StripeWebhooksController::class, 'handle']);
-Route::get('/orders/{order}',[OrdersController::class,'show'])->name('orders.show');
+Route::get('orders/{order}',[OrdersController::class,'show'])->name('orders.show');
 
 // require __DIR__ . '/auth.php';
 
