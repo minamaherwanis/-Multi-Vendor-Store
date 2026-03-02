@@ -33,6 +33,8 @@
                         </div>
                         <form class="row" method="post" action="{{ route('register') }}">
                             @csrf
+                            <input type="hidden" name="role" value="user">
+
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="reg-fn">First Name</label>

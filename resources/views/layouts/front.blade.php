@@ -138,7 +138,7 @@
                 <div class="row align-items-center">
                     <div class="col-lg-3 col-md-3 col-7">
                         <!-- Start Header Logo -->
-                        <a class="navbar-brand" href="index.html">
+                        <a class="navbar-brand" href="{{ route('home') }}">
                             <img src="{{ asset('assets/images/logo/logo.svg') }}" alt="Logo">
                         </a>
                         <!-- End Header Logo -->
@@ -148,35 +148,73 @@
                         <div class="main-menu-search">
                             <!-- navbar search start -->
                             <div class="navbar-search search-style-5">
-                                <div class="search-select">
-                                    <div class="select-position">
-                                        <select id="select1">
-                                            <option selected>All</option>
-                                            <option value="1">option 01</option>
-                                            <option value="2">option 02</option>
-                                            <option value="3">option 03</option>
-                                            <option value="4">option 04</option>
-                                            <option value="5">option 05</option>
-                                        </select>
+                                <form action="{{ URL::current() }}" method="get">
+
+                                    <div class="search-input">
+                                        <input type="text" name="name" placeholder="Search products..."
+                                            value="{{ request('name') }}">
                                     </div>
-                                </div>
-                                <div class="search-input">
-                                    <input type="text" placeholder="Search">
-                                </div>
-                                <div class="search-btn">
-                                    <button><i class="lni lni-search-alt"></i></button>
-                                </div>
+                                    <div class="search-btn">
+                                        <button type="submit"><i class="lni lni-search-alt"></i></button>
+                                    </div>
+                                </form>
                             </div>
                             <!-- navbar search Ends -->
                         </div>
                         <!-- End Main Menu Search -->
                     </div>
+
+                    <style>
+                        /* خلي الفورم كله جنب بعض */
+                        .navbar-search.search-style-5 form {
+                            display: flex;
+                            align-items: center;
+                            width: 100%;
+                        }
+
+                        /* select */
+                        .search-select select {
+                            height: 45px;
+                            padding: 0 10px;
+                            font-size: 16px;
+                            border: 1px solid #ddd;
+                            border-radius: 5px 0 0 5px;
+                            outline: none;
+                        }
+
+                        /* input */
+                        .search-input input {
+                            flex: 1;
+                            /* ياخد كل المساحة المتاحة */
+                            height: 45px;
+                            padding: 0 10px;
+                            font-size: 16px;
+                            border: 1px solid #ddd;
+                            border-left: none;
+                            /* عشان يبان متصل بالـ select */
+                            outline: none;
+                        }
+
+                        /* زرار البحث */
+                        .search-btn button {
+                            height: 45px;
+                            width: 55px;
+                            border: none;
+                            background: #007bff;
+                            color: #fff;
+                            font-size: 18px;
+                            border-radius: 0 5px 5px 0;
+                            cursor: pointer;
+                        }
+                    </style>
+
+
                     <div class="col-lg-4 col-md-2 col-5">
                         <div class="middle-right-area">
                             <div class="nav-hotline">
                                 <i class="lni lni-phone"></i>
                                 <h3>Hotline:
-                                    <span>(+100) 123 456 7890</span>
+                                    <span>01224502280</span>
                                 </h3>
                             </div>
                             <div class="navbar-cart">
@@ -195,7 +233,7 @@
         </div>
         <!-- End Header Middle -->
         <!-- Start Header Bottom -->
-        <div class="container">
+        {{-- <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-8 col-md-6 col-12">
                     <div class="nav-inner">
@@ -317,7 +355,7 @@
                     <!-- End Nav Social -->
                 </div>
             </div>
-        </div>
+        </div> --}}
         <!-- End Header Bottom -->
     </header>
     <!-- End Header Area -->
@@ -347,7 +385,7 @@
                     <div class="row">
                         <div class="col-lg-3 col-md-4 col-12">
                             <div class="footer-logo">
-                                <a href="index.html">
+                                <a href="{{ route('home') }}">
                                     <img src="{{ asset('assets/images/logo/white-logo.svg') }}" alt="#">
                                 </a>
                             </div>

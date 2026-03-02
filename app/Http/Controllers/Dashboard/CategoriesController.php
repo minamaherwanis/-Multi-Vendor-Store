@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Dashboard;
+
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Exception;
@@ -25,10 +26,13 @@ class CategoriesController extends Controller
         $request = request();
 
         $categories = Category::with('parent')
-        ->withCount(['products as products_number' => function($query){
-           $query->where('status','=','active');
-        }]
-        )->filter(filter: $request->query())->paginate();
+            ->withCount(
+                ['products as products_number' => function ($query) {
+                    $query->where('status', '=', 'active');
+                }]
+            )->filter(filter: $request->query())->paginate();
+
+
         // leftJoin('categories as parents', 'parents.id', '=', 'categories.parent_id')
         //     ->select([
         //         'categories.*',
@@ -49,7 +53,7 @@ class CategoriesController extends Controller
      */
     public function create()
     {
-          Gate::authorize('categories.create');
+        Gate::authorize('categories.create');
 
         $parents = category::all();
         $category = new Category();
@@ -84,12 +88,10 @@ class CategoriesController extends Controller
             $data['image'] = $path;
         } else {
             $data['image'] = null;
-
         }
 
         Category::create($data);
         return to_route('categories.index')->with('success', 'Category Created!');
-
     }
 
     /**
@@ -97,11 +99,11 @@ class CategoriesController extends Controller
      */
     public function show(Category $category)
     {
-              Gate::authorize('categories.view');
+        Gate::authorize('categories.view');
 
-        
-        return view('dashboard.categories.show',[
-            'category'=>$category
+
+        return view('dashboard.categories.show', [
+            'category' => $category
         ]);
     }
 
@@ -110,13 +112,12 @@ class CategoriesController extends Controller
      */
     public function edit(string $id)
     {
-                Gate::authorize('categories.update');
+        Gate::authorize('categories.update');
 
         try {
             $category = Category::findOrFail($id);
         } catch (Exception $th) {
             return to_route('categories.index')->with('info', 'Record not found');
-
         }
         // هاتلي كل الداتا من جدول الكاتيجري ماعادا الصف الي 
         //  بتاعه هو ال بينعدل فيه حاليا id  (يعني ميجيبش نفسه )
@@ -137,7 +138,7 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, string $id)
     {
-                        Gate::authorize('categories.update');
+        Gate::authorize('categories.update');
 
         $request->validate(Category::rules($id));
 
@@ -171,13 +172,12 @@ class CategoriesController extends Controller
      */
     public function destroy(string $id)
     {
-                        Gate::authorize('categories.delete');
+        Gate::authorize('categories.delete');
 
         $ssinglecategoryfromDB = Category::findOrFail($id);
         $ssinglecategoryfromDB->delete();
 
         return to_route('categories.index')->with('success', 'Category deleted');
-
     }
     public function trash()
     {
@@ -186,7 +186,6 @@ class CategoriesController extends Controller
 
 
         return view('dashboard.categories.trash', compact('categories'));
-
     }
     public function restore(Request $request, $id)
     {
@@ -197,7 +196,6 @@ class CategoriesController extends Controller
 
 
         return to_route('categories.trash')->with('success', 'Category restore!');
-
     }
     public function forceDelete($id)
     {
@@ -206,11 +204,8 @@ class CategoriesController extends Controller
 
         if ($ssinglecategoryfromDB->image) {
             Storage::disk('public')->delete($ssinglecategoryfromDB->image);
-
         }
 
         return to_route('categories.trash')->with('success', 'Category deleted forever !');
-
     }
-
 }

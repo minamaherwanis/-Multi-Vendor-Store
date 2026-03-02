@@ -1,12 +1,12 @@
 <?php
 namespace App\Models;
-use Auth;
+use Illuminate\Support\Facades\Auth ;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use PhpParser\Node\Stmt\Return_;
 use function PHPUnit\Framework\returnCallback;
-use Str;
+use Illuminate\Support\Str;
 class Product extends Model
 {
     use HasFactory;

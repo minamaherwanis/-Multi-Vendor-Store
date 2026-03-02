@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
-use Str;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
 
