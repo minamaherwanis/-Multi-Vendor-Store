@@ -31,8 +31,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(),
  function()
  {
 Route::get(  '/',   [HomeController::class, 'index'])->name('home');
-
 Route::get('/products', [ProductsController::class, 'index'])->name('frontend.products.index');
+
 Route::get('/products/{product:slug}', [ProductsController::class, 'show'])->name('frontend.products.show');
 
 Route::resource('cart',CartController::class);
@@ -64,7 +64,12 @@ Route::get('orders/{order}/pay/stripe/callback', [PaymentsController::class, 'co
     ->name('stripe.return');
     
 Route::any('stripe/webhook', [StripeWebhooksController::class, 'handle']);
-Route::get('/orders/{order}',[OrdersController::class,'show'])->name('orders.show');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/orders/{order}', [OrdersController::class,'show'])->name('orders.show');
+    Route::get('/orders', [OrdersController::class, 'index'])->name('orders.index');
+});
+
 
 // require __DIR__ . '/auth.php';
 

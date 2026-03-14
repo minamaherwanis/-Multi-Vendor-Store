@@ -1,41 +1,65 @@
 <?php
+
 namespace App\Models;
-use Auth;
+
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use PhpParser\Node\Stmt\Return_;
 use function PHPUnit\Framework\returnCallback;
-use Str;
+
 class Product extends Model
 {
     use HasFactory;
-    protected $fillable=[
-        'store_id','category_id','name','slug','image',
-        'description','price','compare_price','rating',
-        'option','featured','status',
+    protected $fillable = [
+        'store_id',
+        'category_id',
+        'name',
+        'slug',
+        'image',
+        'description',
+        'price',
+        'compare_price',
+        'rating',
+        'option',
+        'featured',
+        'status',
     ];
-    protected $hidden=[
-        'created_at','updated_at','deleted_at','image'
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+        'image'
     ];
-    protected $appends=[
+    protected $appends = [
         'image_url'
     ];
 
     protected static function booted()
     {
-        static::addGlobalScope('store', function (Builder $builder)
-         {
+        static::addGlobalScope('store', function (Builder $builder) {
             $user = Auth::user();
-            if ($user && $user->store_id)
-             {
-                $builder->where('store_id', '=', $user->store_id);
 
+            if ($user && $user->type === 'admin') {
+                if ($user->store_id) {
+                    $builder->where('store_id', '=', $user->store_id);
+                } else {
+                    $builder->whereRaw('1 = 0');
+                }
             }
         });
-        static::creating(function(Product $product){
-            $product->slug=Str::slug($product->name);
-        });
+
+static::creating(function (Product $product) {
+    $slug = Str::slug($product->name);
+
+    if (Product::where('slug', $slug)->exists()) {
+        $slug .= '-' . uniqid();
+    }
+
+    $product->slug = $slug;
+});
 
     }
     public function category()
@@ -60,47 +84,66 @@ class Product extends Model
     }
     public function scopeActive(Builder $builder)
     {
-        $builder->where('status','=','active');
+        $builder->where('status', '=', 'active');
     }
+    public function scopeFrontendFilter(Builder $builder, $filters)
+    {
+        $options = array_merge([
+            'name'   => null,
+            'status' => 'active',
+        ], $filters);
+
+        $builder->when($options['name'], function ($builder, $value) {
+            $builder->where('products.name', 'like', "%{$value}%");
+        });
+
+        $builder->when($options['status'], function ($query, $status) {
+            return $query->where('status', $status);
+        });
+    }
+
+
     //////////////////////////////Accessors//////////////////////
     public function getImageUrlAttribute()
     {
         if (! $this->image) {
-                 Return 'https://www.tiffincurry.ca/wp-content/uploads/2021/02/default-product.png';
+            return 'https://www.tiffincurry.ca/wp-content/uploads/2021/02/default-product.png';
         }
-         if (Str::startsWith($this->image,['http://','https://'])) {
+        if (Str::startsWith($this->image, ['http://', 'https://'])) {
             return $this->image;
         }
-     return asset('storage/'.$this->image);
+        return asset('storage/' . $this->image);
     }
     public function getSalePercentAttribute()
     {
         if (!$this->compare_price) {
             return 0;
         }
-        return round(100-(100 * $this->price / $this->compare_price));
+        return round(100 - (100 * $this->price / $this->compare_price));
     }
-     public function scopeFilter(Builder $builder, $filters)
+    public function scopeFilter(Builder $builder, $filters)
     {
         $options = array_merge([
             'store_id' => null,
             'category_id' => null,
             'tag_id' => null,
             'status' => 'active',
+            'name'        => null,
+
         ], $filters);
 
         $builder->when($options['status'], function ($query, $status) {
             return $query->where('status', $status);
         });
 
-        $builder->when($options['store_id'], function($builder, $value) {
+        $builder->when($options['store_id'], function ($builder, $value) {
             $builder->where('store_id', $value);
         });
-        $builder->when($options['category_id'], function($builder, $value) {
+        $builder->when($options['category_id'], function ($builder, $value) {
             $builder->where('category_id', $value);
         });
-        $builder->when($options['tag_id'], function($builder, $value) {
-            $builder->whereExists(function($query) use ($value) {
+        $builder->when($options['tag_id'], function ($builder, $value) {
+            $builder->whereExists(function ($query) use ($value) {
                 $query->selectRaw('1')
                     ->from('product_tag')
                     ->whereRaw('product_id = products.id')
@@ -108,11 +151,13 @@ class Product extends Model
             });
             // $builder->whereRaw('id IN (SELECT product_id FROM product_tag WHERE tag_id = ?)', [$value]);
             // $builder->whereRaw('EXISTS (SELECT 1 FROM product_tag WHERE tag_id = ? AND product_id = products.id)', [$value]);
-            
+
             // $builder->whereHas('tags', function($builder) use ($value) {
             //     $builder->where('id', $value);
             // });
         });
+        $builder->when($options['name'], function ($builder, $value) {
+            $builder->where('name', 'LIKE', "%{$value}%");
+        });
     }
-
 }

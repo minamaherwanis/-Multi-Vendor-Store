@@ -33,42 +33,31 @@
                         </div>
                         <form class="row" method="post" action="{{ route('register') }}">
                             @csrf
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="reg-fn">First Name</label>
-                                    <x-form.input id="reg-fn" name="first_name" required />
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="reg-ln">Last Name</label>
-                                    <x-form.input id="reg-ln" name="last_name" required />
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="reg-email">E-mail Address</label>
-                                    <x-form.input type="email" id="reg-email" name="email" required />
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="reg-phone">Phone Number</label>
-                                    <x-form.input type="text" id="reg-phone" name="phone_number" required />
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="reg-pass">Password</label>
-                                    <x-form.input type="password" id="reg-pass" name="password" required />
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="reg-pass-confirm">Confirm Password</label>
-                                    <x-form.input type="password" id="reg-pass-confirm" name="password_confirmation" required />
-                                </div>
-                            </div>
+                            <div class="col-sm-12">
+    <div class="form-group">
+        <label for="reg-name">Full Name</label>
+        <x-form.input id="reg-name" name="name" required />
+    </div>
+</div>
+<div class="col-sm-6">
+    <div class="form-group">
+        <label for="reg-email">E-mail Address</label>
+        <x-form.input type="email" id="reg-email" name="email" required />
+    </div>
+</div>
+<div class="col-sm-6">
+    <div class="form-group">
+        <label for="reg-pass">Password</label>
+        <x-form.input type="password" id="reg-pass" name="password" required />
+    </div>
+</div>
+<div class="col-sm-6">
+    <div class="form-group">
+        <label for="reg-pass-confirm">Confirm Password</label>
+        <x-form.input type="password" id="reg-pass-confirm" name="password_confirmation" required />
+    </div>
+</div>
+
                             <div class="button">
                                 <button class="btn" type="submit">Register</button>
                             </div>

@@ -1,10 +1,9 @@
 <?php
-namespace App\Actions\Fortify;
-
+namespace App\Actions\Admin;
 use App\Models\Admin;
 use Illuminate\Container\Attributes\Auth;
 use Illuminate\Support\Facades\Hash;
-class AuthenticateUser
+class AuthenticateAdmin
 {
     public function authenticate($request){
         $username=$request->post(config('fortify.username'));

@@ -14,7 +14,8 @@ class CartController extends Controller
 
     public function __construct(CartRepository $cart)
     {
-        $this->cart = $cart;
+        $this->cart = $cart; 
+          //هنا بيعمل اوبجكتت من من الكارت ريبستوري ويخزنه ف متغير الكارت علشان اقدر اوصل لكل فانكشن فيه
     }
 
  

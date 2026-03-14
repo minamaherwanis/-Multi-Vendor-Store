@@ -2,9 +2,9 @@
 
 namespace App\View\Components\Dashboard;
 
-use Auth;
 use Closure;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Component;
 
 class NotificationsMenu extends Component

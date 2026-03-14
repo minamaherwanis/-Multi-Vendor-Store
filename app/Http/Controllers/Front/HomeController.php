@@ -8,8 +8,17 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-   public function index(){
-      $products=Product::with('category')->active()->latest()->limit(8)->get();
-    return view('front.home',compact('products'));
+   public function index(Request $request)
+   {
+      $filters = $request->only(['name']);
+
+      $products = Product::with('category')
+         ->withoutGlobalScope('store')
+         ->frontendFilter($filters) 
+         ->latest()
+         ->paginate(32);
+
+      return view('front.home', compact('products'));
    }
 }
+

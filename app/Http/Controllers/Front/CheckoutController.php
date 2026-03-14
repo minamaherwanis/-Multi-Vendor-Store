@@ -31,61 +31,60 @@ public function create(CartRepository $cart)
 }
 
 
-    public function store(Request $request, CartRepository $cart)
-    {
-        
-        $request->validate([
-            'addr.billing.first_name' => ['required', 'string', 'max:255'],
-            'addr.billing.last_name' => ['required', 'string', 'max:255'],
-            'addr.billing.email' => ['required', 'string', 'max:255'],
-            'addr.billing.phone_number' => ['required', 'string', 'max:255'],
-            'addr.billing.city' => ['required', 'string', 'max:255'],
-        ]);
+public function store(Request $request, CartRepository $cart)
+{
+    $request->validate([
+        'addr.billing.first_name' => ['required', 'string', 'max:255'],
+        'addr.billing.last_name' => ['required', 'string', 'max:255'],
+        'addr.billing.email' => ['required', 'string', 'max:255'],
+        'addr.billing.phone_number' => ['required', 'string', 'max:255'],
+        'addr.billing.city' => ['required', 'string', 'max:255'],
+    ]);
 
-        $items = $cart->get()->groupBy('products.store_id')->all();
+    $items = $cart->get()->groupBy('products.store_id')->all();
 
-        DB::beginTransaction();
-        try {
-            $orders = [];
+    DB::beginTransaction();
+    try {
+        $orders = [];
 
-            
-            foreach ($items as $store_id => $cart_items) {
-                $order = Order::create([
-                    
-                    'store_id' => $store_id,
-                    'user_id' => Auth::id(),
-                    'payment_method' => 'cod',
+        foreach ($items as $store_id => $cart_items) {
+            $order = Order::create([
+                'store_id' => $store_id,
+                'user_id' => Auth::id(),
+                'payment_method' => 'cod',
+            ]);
+
+            foreach ($cart_items as $item) {
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $item->product_id,
+                    'product_name' => $item->products->name,
+                    'price' => $item->products->price,
+                    'quantity' => $item->quantity,
                 ]);
-                
-
-
-                foreach ($cart_items as $item) {
-                    OrderItem::create([
-                        'order_id' => $order->id,
-                        'product_id' => $item->product_id,
-                        'product_name' => $item->products->name,
-                        'price' => $item->products->price,
-                        'quantity' => $item->quantity,
-                    ]);
-                }
-
-                foreach ($request->post('addr') as $type => $address) {
-                    $address['type'] = $type;
-                    $order->addresses()->create($address);
-
-                }  
-                 
-
             }
-            DB::commit();
-            // event('order.created',$order,Auth::user());
-            event(new OrderCreated(order: $order));
-      
-        } catch (Throwable $e) {
-            DB::rollBack();
-            throw $e;
+
+            foreach ($request->post('addr') as $type => $address) {
+                $address['type'] = $type;
+                $order->addresses()->create($address);
+            }
+
+            $order->delivery()->create([
+                'latitude'  => $request->input('latitude', 26.155),  
+                'longitude' => $request->input('longitude', 32.716), 
+            ]);
+
+            $orders[] = $order;
         }
 
-        return redirect()->route( 'orders.payments.create',$order->id);
+        DB::commit();
+        event(new OrderCreated(order: $order));
+
+    } catch (Throwable $e) {
+        DB::rollBack();
+        throw $e;
     }
+
+    return redirect()->route('orders.payments.create', $order->id);
+}
 }

@@ -12,7 +12,8 @@
                     <div class="col-lg-6 col-md-6 col-12">
                         <ul class="breadcrumb-nav">
                             <li><a href="{{ route('home') }}"><i class="lni lni-home"></i> Home</a></li>
-                            <li><a href="{{ route('products.index') }}">Shop</a></li>
+                                                        <li><a href="{{ route('cart.index') }}"><i class="lni lni-cart"></i> Cart</a></li>
+
                             <li>checkout</li>
                         </ul>
                     </div>
@@ -262,7 +263,7 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="checkout-sidebar">
-                        <div class="checkout-sidebar-coupon">
+                        {{-- <div class="checkout-sidebar-coupon">
                             <p>Appy Coupon to get discount!</p>
                             <form action="#">
                                 <div class="single-form form-default">
@@ -274,7 +275,7 @@
                                     </div>
                                 </div>
                             </form>
-                        </div>
+                        </div> --}}
                         <div class="checkout-sidebar-price-table mt-30">
                             <h5 class="title">Pricing Table</h5>
 
@@ -284,13 +285,10 @@
                                     <p class="price">{{Currency::format($cart->total()) }}</p>
                                 </div>
                                 <div class="total-price shipping">
-                                    <p class="value">Subotal Price:</p>
+                                    <p class="value"> Shipping</p>
                                     <p class="price">$0.00</p>
                                 </div>
-                                <div class="total-price discount">
-                                    <p class="value">Subotal Price:</p>
-                                    <p class="price">$0.00</p>
-                                </div>
+
                             </div>
 
                             <div class="total-payable">
@@ -300,14 +298,10 @@
                                 </div>
                             </div>
                             <div class="price-table-btn button">
-                                <a href="javascript:void(0)" class="btn btn-alt">Checkout</a>
+                                <a href="{{ route('checkout') }}" class="btn btn-alt">Checkout</a>
                             </div>
                         </div>
-                        <div class="checkout-sidebar-banner mt-30">
-                            <a href="product-grids.html">
-                                <img src="https://via.placeholder.com/400x330" alt="#">
-                            </a>
-                        </div>
+
                     </div>
                 </div>
             </div>

@@ -87,9 +87,9 @@
                     <div class="col-lg-4 col-md-4 col-12">
                         <div class="top-middle">
                             <ul class="useful-links">
-                                <li><a href="index.html">{{ trans('Home') }}</a></li>
-                                <li><a href="about-us.html">{{ trans('About Us') }}</a></li>
-                                <li><a href="contact.html">{{ trans('Contact Us') }}</a></li>
+                                <li><a href="{{ route('home') }}">{{ trans('Home') }}</a></li>
+                                <li><a href="https://minamaherwanis.github.io/Portfolio/">{{ trans('About Us') }}</a></li>
+                                <li><a href="https://minamaherwanis.github.io/Portfolio/">{{ trans('Contact Us') }}</a></li>
                             </ul>
                         </div>
                     </div>
@@ -138,8 +138,9 @@
                 <div class="row align-items-center">
                     <div class="col-lg-3 col-md-3 col-7">
                         <!-- Start Header Logo -->
-                        <a class="navbar-brand" href="index.html">
-                            <img src="{{ asset('assets/images/logo/logo.svg') }}" alt="Logo">
+                        <a class="navbar-brand d-flex align-items-center" href="{{ route('home') }}">
+                            <img src="{{ asset('assets/images/favicon.svg') }}" alt="Logo" style="width:45px; height:auto;">
+                            <span class="ms-1" style="font-size:16px;">Multi Vendor Store</span>
                         </a>
                         <!-- End Header Logo -->
                     </div>
@@ -147,26 +148,18 @@
                         <!-- Start Main Menu Search -->
                         <div class="main-menu-search">
                             <!-- navbar search start -->
+                                <form action="{{ route('home') }}" method="GET">
+
                             <div class="navbar-search search-style-5">
-                                <div class="search-select">
-                                    <div class="select-position">
-                                        <select id="select1">
-                                            <option selected>All</option>
-                                            <option value="1">option 01</option>
-                                            <option value="2">option 02</option>
-                                            <option value="3">option 03</option>
-                                            <option value="4">option 04</option>
-                                            <option value="5">option 05</option>
-                                        </select>
-                                    </div>
-                                </div>
                                 <div class="search-input">
-                                    <input type="text" placeholder="Search">
+                                    <input type="text" name="name" placeholder="Search">
                                 </div>
                                 <div class="search-btn">
-                                    <button><i class="lni lni-search-alt"></i></button>
+                                    <button type="submit"><i class="lni lni-search-alt"></i></button>
                                 </div>
                             </div>
+                                </form>
+
                             <!-- navbar search Ends -->
                         </div>
                         <!-- End Main Menu Search -->
@@ -176,16 +169,16 @@
                             <div class="nav-hotline">
                                 <i class="lni lni-phone"></i>
                                 <h3>Hotline:
-                                    <span>(+100) 123 456 7890</span>
+                                    <span>01224502280</span>
                                 </h3>
                             </div>
                             <div class="navbar-cart">
                                 <div class="wishlist">
-                                    <a href="javascript:void(0)">
-                                        <i class="lni lni-heart"></i>
-                                        <span class="total-items">0</span>
+                                    <a href="{{ route('orders.index') }}">
+                                        <i class="lni lni-delivery"></i>
                                     </a>
                                 </div>
+
                                 <x-cart-menu />
                             </div>
                         </div>
@@ -200,7 +193,7 @@
                 <div class="col-lg-8 col-md-6 col-12">
                     <div class="nav-inner">
                         <!-- Start Mega Category Menu -->
-                        <div class="mega-category-menu">
+                        {{-- <div class="mega-category-menu">
                             <span class="cat-button"><i class="lni lni-menu"></i>All Categories</span>
                             <ul class="sub-category">
                                 <li><a href="product-grids.html">Electronics <i class="lni lni-chevron-right"></i></a>
@@ -229,7 +222,7 @@
                                 <li><a href="product-grids.html">Video Games </a></li>
                                 <li><a href="product-grids.html">Home Appliances </a></li>
                             </ul>
-                        </div>
+                        </div> --}}
                         <!-- End Mega Category Menu -->
                         <!-- Start Navbar -->
                         <nav class="navbar navbar-expand-lg">
@@ -243,9 +236,9 @@
                             <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
                                 <ul id="nav" class="navbar-nav ms-auto">
                                     <li class="nav-item">
-                                        <a href="index.html" aria-label="Toggle navigation">Home</a>
+                                        <a href="{{ route('home') }}" aria-label="Toggle navigation">Home</a>
                                     </li>
-                                    <li class="nav-item">
+                                    {{-- <li class="nav-item">
                                         <a class="dd-menu active collapsed" href="javascript:void(0)"
                                             data-bs-toggle="collapse" data-bs-target="#submenu-1-2"
                                             aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -258,8 +251,8 @@
                                             <li class="nav-item"><a href="mail-success.html">Mail Success</a></li>
                                             <li class="nav-item"><a href="404.html">404 Error</a></li>
                                         </ul>
-                                    </li>
-                                    <li class="nav-item">
+                                    </li> --}}
+                                    {{-- <li class="nav-item">
                                         <a class="dd-menu collapsed" href="javascript:void(0)"
                                             data-bs-toggle="collapse" data-bs-target="#submenu-1-3"
                                             aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -271,8 +264,8 @@
                                             <li class="nav-item"><a href="cart.html">Cart</a></li>
                                             <li class="nav-item"><a href="checkout.html">Checkout</a></li>
                                         </ul>
-                                    </li>
-                                    <li class="nav-item">
+                                    </li> --}}
+                                    {{-- <li class="nav-item">
                                         <a class="dd-menu collapsed" href="javascript:void(0)"
                                             data-bs-toggle="collapse" data-bs-target="#submenu-1-4"
                                             aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -285,9 +278,9 @@
                                             <li class="nav-item"><a href="blog-single-sidebar.html">Blog Single
                                                     Sibebar</a></li>
                                         </ul>
-                                    </li>
+                                    </li> --}}
                                     <li class="nav-item">
-                                        <a href="contact.html" aria-label="Toggle navigation">Contact Us</a>
+                                        <a href="https://minamaherwanis.github.io/Portfolio/" aria-label="Toggle navigation">Contact Us</a>
                                     </li>
                                 </ul>
                             </div> <!-- navbar collapse -->
@@ -301,16 +294,16 @@
                         <h5 class="title">Follow Us:</h5>
                         <ul>
                             <li>
-                                <a href="javascript:void(0)"><i class="lni lni-facebook-filled"></i></a>
+                                <a href="https://minamaherwanis.github.io/Portfolio/"><i class="lni lni-facebook-filled"></i></a>
                             </li>
                             <li>
-                                <a href="javascript:void(0)"><i class="lni lni-twitter-original"></i></a>
+                                <a href="https://minamaherwanis.github.io/Portfolio/"><i class="lni lni-twitter-original"></i></a>
                             </li>
                             <li>
-                                <a href="javascript:void(0)"><i class="lni lni-instagram"></i></a>
+                                <a href="https://minamaherwanis.github.io/Portfolio/"><i class="lni lni-instagram"></i></a>
                             </li>
                             <li>
-                                <a href="javascript:void(0)"><i class="lni lni-skype"></i></a>
+                                <a href="https://minamaherwanis.github.io/Portfolio/"><i class="lni lni-skype"></i></a>
                             </li>
                         </ul>
                     </div>
@@ -345,29 +338,15 @@
             <div class="container">
                 <div class="inner-content">
                     <div class="row">
-                        <div class="col-lg-3 col-md-4 col-12">
-                            <div class="footer-logo">
-                                <a href="index.html">
-                                    <img src="{{ asset('assets/images/logo/white-logo.svg') }}" alt="#">
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-lg-9 col-md-8 col-12">
-                            <div class="footer-newsletter">
-                                <h4 class="title">
-                                    Subscribe to our Newsletter
-                                    <span>Get all the latest information, Sales and Offers.</span>
-                                </h4>
-                                <div class="newsletter-form-head">
-                                    <form action="#" method="get" target="_blank" class="newsletter-form">
-                                        <input name="EMAIL" placeholder="Email address here..." type="email">
-                                        <div class="button">
-                                            <button class="btn">Subscribe<span class="dir-part"></span></button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="col-lg-3 col-md-3 col-7">
+                        <!-- Start Header Logo -->
+                        <a class="navbar-brand d-flex align-items-center" href="{{ route('home') }}">
+                            <img src="{{ asset('assets/images/favicon.svg') }}" alt="Logo" style="width:60px; height:auto;">
+                            <span class="ms-1" style="font-size:18px;">Multi Vendor Store</span>
+                        </a>
+                        <!-- End Header Logo -->
+                    </div>
+
                     </div>
                 </div>
             </div>
@@ -463,8 +442,8 @@
                         </div>
                         <div class="col-lg-4 col-12">
                             <div class="copyright">
-                                <p>Designed and Developed by<a href="https://graygrids.com/" rel="nofollow"
-                                        target="_blank">GrayGrids</a></p>
+                                <p>Designed and Developed by<a href="https://minamaherwanis.github.io/Portfolio/" rel="nofollow"
+                                        target="_blank">Mina Maher</a></p>
                             </div>
                         </div>
                         <div class="col-lg-4 col-12">

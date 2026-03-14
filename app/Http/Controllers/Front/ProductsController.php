@@ -11,13 +11,16 @@ class ProductsController extends Controller
     public function index(){
         
     }
-    public function show(Product $product)
-    {
-        if($product->status != 'active')
-        {
-            abort(400);
-        }
-            return view('front.products.show', compact('product'));
+public function show($slug)
+{
+    $product = Product::withoutGlobalScope('store')
+        ->where('slug', $slug)
+        ->firstOrFail();
 
+    if ($product->status !== 'active') {
+        abort(404);
     }
+
+    return view('front.products.show', compact('product'));
+}
 }

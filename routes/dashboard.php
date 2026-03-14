@@ -14,7 +14,7 @@ Route::group(
     [
 
 
-        'middleware' => ['auth:admin,web'],
+        'middleware' => ['auth', 'checkUserType:admin'],
         'prefix'=>'admin'
 
     ],

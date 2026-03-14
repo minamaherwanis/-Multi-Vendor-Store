@@ -13,8 +13,8 @@
                                            @foreach ($items as $item)
                                                
                                             <li>
-                                                <a href="javascript:void(0)" class="remove" title="Remove this item"><i
-                                                        class="lni lni-close"></i></a>
+                                                {{-- <a href="javascript:void(0)" class="remove" title="Remove this item"><i
+                                                        class="lni lni-close"></i></a> --}}
                                                 <div class="cart-img-head">
                                                     <a class="cart-img" href="{{route('frontend.products.show',$item->products->slug)}}"><img
                                                             src="{{ asset($item->products->image_url) }}"
@@ -34,7 +34,7 @@
                                                 <span class="total-amount">{{Currency::format($total)}}</span>
                                             </div>
                                             <div class="button">
-                                                <a href="checkout.html" class="btn animate">Checkout</a>
+                                                <a href="{{route('checkout')}}" class="btn animate">Checkout</a>
                                             </div>
                                         </div>
                                     </div>
