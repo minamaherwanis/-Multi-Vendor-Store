@@ -30,16 +30,17 @@ class DeductProductQuantity
      */
     public function handle(OrderCreated $event)
     {
-        
+
         $order = $event->order;
-        
+
         try {
             foreach ($order->products as $product) {
                 $product->decrement('quantity', $product->order_item->quantity);
-               
+                if ($product->quantity <= 0) {
+                    $product->update(['status' => 'archived']);
+                }
             }
         } catch (Throwable $e) {
-            
         }
     }
 }

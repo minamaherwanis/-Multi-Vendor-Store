@@ -1,4 +1,16 @@
 <x-front-layout title="Order Payment">
+    @if(session('success'))
+    <div class="alert alert-success text-center">
+        {{ session('success') }}
+    </div>
+@endif
+
+@if($errors->any())
+    <div class="alert alert-danger text-center">
+        {{ $errors->first() }}
+    </div>
+@endif
+
     <div class="account-login section">
         <div class="container">
             <div class="row">

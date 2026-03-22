@@ -15,7 +15,7 @@ use App\Http\Controllers\StripeWebhooksController;
 use GuzzleHttp\Promise\Create;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Front\CheckoutController;
-use App\Http\Controllers\Dashboard\ProfileController;
+use App\Http\Controllers\Front\UserProfileController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 
@@ -37,17 +37,22 @@ Route::get('/products/{product:slug}', [ProductsController::class, 'show'])->nam
 
 Route::resource('cart',CartController::class);
 
-Route::get('checkout', [CheckoutController::class, 'create'])->name('checkout');
+
+
+
+Route::middleware(['auth','checkUserType:user'])->group(function () {
+    Route::get('auth/user/2fa', [TwoFactorAuthenticationController::class, 'index'])
+        ->name('front.2fa');
+        Route::get('checkout', [CheckoutController::class, 'create'])->name('checkout');
 Route::post('checkout', [CheckoutController::class, 'store']);
 
-Route::get('auth/user/2fa', [TwoFactorAuthenticationController::class, 'index'])->name('front.2fa');
-
+});
 Route::post('/currency',[CurrencyConverterController::class,'store'])->name('currency.store');
 });
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile', [UserProfileController::class, 'edit'])->name('front.profile.edit');
+    Route::patch('/profile', [UserProfileController::class, 'update'])->name('front.profile.update');
+    Route::delete('/profile', [UserProfileController::class, 'destroy'])->name('front.profile.destroy');
 });
 Route::get('auth/{provider}/redirect', [SocialLoginController::class, 'redirect'])
     ->name('auth.socilaite.redirect');
@@ -56,13 +61,13 @@ Route::get('auth/{provider}/callback', [SocialLoginController::class, 'callback'
 
 Route::get('auth/{provider}/user', [\App\Http\Controllers\SocialController::class, 'index']);
 
-Route::get('orders/{order}/pay',[PaymentsController::class,'create'])
-->name('orders.payments.create');
+
 Route::post('orders/{order}/stripe/payment-intent', [PaymentsController::class, 'createStripePaymentIntent'])
     ->name('stripe.paymentIntent.create');
 Route::get('orders/{order}/pay/stripe/callback', [PaymentsController::class, 'confirm'])
     ->name('stripe.return');
-    
+    Route::get('orders/{order}/pay',[PaymentsController::class,'create'])
+->name('orders.payments.create');
 Route::any('stripe/webhook', [StripeWebhooksController::class, 'handle']);
 
 Route::middleware(['auth'])->group(function () {

@@ -23,18 +23,18 @@ return [
     ],
     [
         'icon' => 'fas fa-receipt nav-icon',
-        'route' => 'categories.index',
+        'route' => 'admin.orders.index',
         'title' => 'Orders',
-        'active' => 'orders.*',
+        'active' => 'admin.orders.*',
         'ability' => 'orders.view',
     ],
-    [
-        'icon' => 'fas fa-user-shield nav-icon',
-        'route' => 'roles.index',
-        'title' => 'Roles',
-        'active' => 'orders.*',
-        'ability' => 'roles.view',
-    ],
+    // [
+    //     'icon' => 'fas fa-user-shield nav-icon',
+    //     'route' => 'roles.index',
+    //     'title' => 'Roles',
+    //     'active' => 'orders.*',
+    //     'ability' => 'roles.view',
+    // ],
 
 
 

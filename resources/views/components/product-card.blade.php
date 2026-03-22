@@ -31,3 +31,17 @@
 
                             </div>
                         </div>
+<style>
+    .product-image {
+    width: 100%;
+    height: 250px; /* أو أي ارتفاع ثابت يعجبك */
+    overflow: hidden;
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    display: block; /* 👈 مهم جدًا */
+}
+</style>

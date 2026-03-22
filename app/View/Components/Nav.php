@@ -27,14 +27,23 @@ class Nav extends Component
         return view('components.nav');
     }
     protected function prepareItems($items){
-        $user=Auth::user();
+        // $user=Auth::user();
+    //     foreach ($items as $key => $item) {
+    //     if ( isset($item['ability']) && !$user->can($item['ability'])) {
+    //         unset($items[$key]);
+    //     }
+                  
+    //     }
+    //     return $items;
+
+    // }
         foreach ($items as $key => $item) {
-        if ( isset($item['ability']) && !$user->can($item['ability'])) {
-            unset($items[$key]);
+        if ( isset($item['ability'])) {
+                 return $items;
         }
                   
         }
-        return $items;
+    
 
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard;
+namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -10,12 +10,12 @@ use Symfony\Component\Intl\Countries;
 use Symfony\Component\Intl\Languages;
 
 
-class ProfileController extends Controller
+class UserProfileController extends Controller
 {
     public function edit()
     {
         $user = Auth::user();
-        return view('dashboard.profile.edit', 
+        return view('front.profile.edit', 
         [
             'user' => $user,
             'countries' => Countries::getNames('en'),
@@ -56,10 +56,10 @@ class ProfileController extends Controller
         ]));
         $profile->save();
 
-        return to_route('dashboard')->with('success', 'Profile Updated!');
+        return to_route('home')->with('success', 'Profile Updated!');
 
     }
-        public function destroy(Request $request)
+    public function destroy(Request $request)
     {
         $user = Auth::user();
 
@@ -68,6 +68,8 @@ class ProfileController extends Controller
 
         Auth::logout();
 
-        return redirect('dashboard')->with('info', 'Account deleted successfully.');
+        return redirect('/')->with('danger', 'Account Deleted Successfully.');
     }
+
+
 }

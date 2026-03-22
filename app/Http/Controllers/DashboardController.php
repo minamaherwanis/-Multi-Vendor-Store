@@ -11,9 +11,8 @@ class DashboardController extends Controller
     public function index()
     {
         $title = 'Store';
-        $user = Auth::user(); // المستخدم الحالي
+        $user = Auth::user(); 
        
-        // تقدر تبعت البيانات للـ view لو محتاج
         return view('dashboard.index',['title'=>$title, 'user'=>$user]);
     }
 }

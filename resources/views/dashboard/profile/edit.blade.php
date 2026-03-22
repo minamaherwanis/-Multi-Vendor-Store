@@ -12,7 +12,7 @@
 @section('content')
     <x-alert type="success" />
     <x-alert type="info" />
-<form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
+<form action="{{ route('admin.profile.update') }}" method="POST" enctype="multipart/form-data">
     @method('patch')
     @csrf
 

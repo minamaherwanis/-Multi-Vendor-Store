@@ -1,21 +1,15 @@
 <x-front-layout>
 
+<x-front-alert type="success" />
+<x-front-alert type="info" />
+<x-front-alert type="warning" />
+<x-front-alert type="danger" />
+<x-front-alert type="error" />
 
     <!-- Start Trending Product Area -->
     <section class="trending-product section">
         <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="section-title">
-                        <h2>Our Products</h2>
-
-                    </div>
-                </div>
-            </div>
-            <div class="d-flex justify-content-center mt-4">
-                {{ $products->links('pagination::bootstrap-4') }}
-            </div>
-
+           
             <div class="row">
                 @foreach ($products as $product)
                     <div class="col-lg-3 col-md-6 col-12">
@@ -86,6 +80,9 @@
     </section>
     <!-- End Shipping Info -->
     <style>
+       .trending-product {
+    padding-top: 0 !important;
+}
         .pagination {
             display: flex;
             justify-content: center;

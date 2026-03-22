@@ -18,6 +18,7 @@ class Order extends Model
             'payment_method',
             'status',
             'payment_status',
+            'total'
         ];
     public function store()
     {

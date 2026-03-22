@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
         // Store::factory(5)->create();
         // Category::factory(10)->create();
         // Product::factory(100)->create();
-        Admin::factory(3)->create();
+        // Admin::factory(3)->create();
         //$this->call(UserSeeder::class);
 
       //  php artisan db:seed

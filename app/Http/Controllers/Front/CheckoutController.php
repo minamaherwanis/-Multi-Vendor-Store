@@ -48,10 +48,16 @@ public function store(Request $request, CartRepository $cart)
         $orders = [];
 
         foreach ($items as $store_id => $cart_items) {
+            $total = collect($cart_items)->sum(function ($item) {
+    return $item->quantity * $item->products->price;
+});
+
             $order = Order::create([
                 'store_id' => $store_id,
                 'user_id' => Auth::id(),
                 'payment_method' => 'cod',
+                 'total'          => $total,
+                 
             ]);
 
             foreach ($cart_items as $item) {

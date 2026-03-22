@@ -20,6 +20,7 @@ class Category extends Model
         'image',
         'status',
         'slug',
+        'store_id'
     ];
 
     public function children()

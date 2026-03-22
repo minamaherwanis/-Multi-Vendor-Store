@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Dashboard;
+
 use App\Models\Product;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
@@ -19,16 +20,25 @@ class ProductsController extends Controller
      */
     public function index(Request $request)
     {
-        $products=Product::with(relations: ['category','store'])->filter( $request->query())-> paginate();
+        if (!auth()->user()->store_id) {
+            return redirect()->route('dashboard')
+                ->with('info', 'Your account is not activated yet. Please contact the administrator to activate your account.');
+        }
+        $products = Product::with(relations: ['category', 'store'])->filter($request->query())->paginate();
 
-        return view('dashboard.products.index' ,compact('products'));    }
+        return view('dashboard.products.index', compact('products'));
+    }
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
- $product = new Product();
+        if (!auth()->user()->store_id) {
+            return redirect()->route('dashboard')
+                ->with('info', 'Your account is not activated yet. Please contact the administrator to activate your account.');
+        }
+        $product = new Product();
         return View('dashboard.products.create', compact('product'));
     }
 
@@ -36,13 +46,19 @@ class ProductsController extends Controller
      * Store a newly created resource in storage.
      */
 
-public function store(Request $request)
+   public function store(Request $request)
 {
+    if (!auth()->user()->store_id) {
+        return redirect()->route('dashboard')
+            ->with('info', 'Your account is not activated yet. Please contact the administrator to activate your account.');
+    }
+
     $request->validate([
         'name'        => 'required|string|max:255',
         'price'       => 'required|numeric|min:0',
         'status'      => 'required|in:active,inactive',
         'category_id' => 'required|exists:categories,id',
+        'quantity'    => 'required|integer|min:0', // ✅
         'tags'        => 'nullable|string',
         'image'       => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
     ]);
@@ -87,77 +103,89 @@ public function store(Request $request)
      */
     public function edit(string $id)
     {
-       $product=Product::findOrFail($id);
-       $tags=implode( ' , ',$product->tags->pluck('name')->toArray());
+        if (!auth()->user()->store_id) {
+            return redirect()->route('dashboard')
+                ->with('info', 'Your account is not activated yet. Please contact the administrator to activate your account.');
+        }
+        $product = Product::findOrFail($id);
+        $tags = implode(' , ', $product->tags->pluck('name')->toArray());
 
-        return View('dashboard.products.edit',compact('tags','product'));
+        return View('dashboard.products.edit', compact('tags', 'product'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-   public function update(Request $request, Product $product)
-{
+    public function update(Request $request, Product $product)
+    {
+        if (!auth()->user()->store_id) {
+            return redirect()->route('dashboard')
+                ->with('info', 'Your account is not activated yet. Please contact the administrator to activate your account.');
+        }
         $request->validate([
-        'name'        => 'required|string|max:255',
-        'price'       => 'required|numeric|min:0',
-        'status'      => 'required|in:active,inactive',
-        'category_id' => 'required|exists:categories,id',
-        'tags'        => 'nullable|string',
-        'image'       => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
-    ]);
+            'name'        => 'required|string|max:255',
+            'price'       => 'required|numeric|min:0',
+            'status'      => 'required|in:active,inactive',
+            'category_id' => 'required|exists:categories,id',
+            'quantity'    => 'required|integer|min:0',
+            'tags'        => 'nullable|string',
+            'image'       => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+        ]);
 
 
-    $data = $request->except(['tags', 'image']);
+        $data = $request->except(['tags', 'image']);
 
-    $tags = explode(',', $request->input('tags'));
-    $tags_ids = [];
+        $tags = explode(',', $request->input('tags'));
+        $tags_ids = [];
 
-    foreach ($tags as $tag_name) {
-        $slug = Str::slug($tag_name);
-        $tag = Tag::where('slug', $slug)->first();
+        foreach ($tags as $tag_name) {
+            $slug = Str::slug($tag_name);
+            $tag = Tag::where('slug', $slug)->first();
 
-        if (!$tag) {
-            $tag = Tag::create([
-                'name' => $tag_name,
-                'slug' => $slug,
-            ]);
+            if (!$tag) {
+                $tag = Tag::create([
+                    'name' => $tag_name,
+                    'slug' => $slug,
+                ]);
+            }
+
+            $tags_ids[] = $tag->id;
         }
 
-        $tags_ids[] = $tag->id;
-    }
+        $product->tags()->sync($tags_ids);
 
-    $product->tags()->sync($tags_ids);
+        $old_image = $product->image;
 
-    $old_image = $product->image;
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $path = $file->store('uploads', 'public');
+            $data['image'] = $path;
 
-    if ($request->hasFile('image')) {
-        $file = $request->file('image');
-        $path = $file->store('uploads', 'public');
-        $data['image'] = $path;
-
-        if ($old_image) {
-            Storage::disk('public')->delete($old_image);
+            if ($old_image) {
+                Storage::disk('public')->delete($old_image);
+            }
+        } else {
+            $data['image'] = $old_image;
         }
-    } else {
-        $data['image'] = $old_image;
+
+        $product->update($data);
+
+        return redirect()->route('products.index')->with('success', 'تم التحديث بنجاح');
     }
 
-    $product->update($data);
 
-    return redirect()->route('products.index')->with('success', 'تم التحديث بنجاح');
-}
-
-    
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        $product=Product::findOrFail($id);
+        if (!auth()->user()->store_id) {
+            return redirect()->route('dashboard')
+                ->with('info', 'Your account is not activated yet. Please contact the administrator to activate your account.');
+        }
+        $product = Product::findOrFail($id);
         $product->delete();
-         return redirect()->route('products.index')->with('success', 'deleted');
+        return redirect()->route('products.index')->with('success', 'deleted');
     }
-
 }

@@ -20,12 +20,12 @@ class GateServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        foreach (config('abilities') as $code => $label) {
-                Gate::define($code,function($user) use($code){
-            return $user->hasAbility($code);
+        // foreach (config('abilities') as $code => $label) {
+        //         Gate::define($code,function($user) use($code){
+        //     return $user->hasAbility($code);
             
-        });   
-        }
+        // });   
+        // }
 
 
     }

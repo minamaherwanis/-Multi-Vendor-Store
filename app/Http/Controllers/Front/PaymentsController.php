@@ -74,20 +74,28 @@ class PaymentsController extends Controller
                         'transaction_data' => json_encode($paymentIntent),
                     ]
                 );
+                $order->update([
+                    'status' => 'processing',
+                    'payment_status' => 'paid',
+                    'payment_method' => 'stripe',
+                ]);
+
 
                 event('payment.created', $payment->id);
 
                 return redirect()->route('home', [
                     'status' => 'payment-succeeded'
-                ]);
+                ])->with('success', 'Payment succeeded!');
             } catch (QueryException $e) {
                 return back()->withErrors(['error' => $e->getMessage()]);
             }
         }
 
-        return redirect()->route('orders.payments.create', [
-            'order' => $order->id,
-            'status' => $paymentIntent->status,
-        ]);
+        return redirect()
+            ->route('orders.payments.create', [
+                'order' => $order->id,
+                'status' => $paymentIntent->status,
+            ])
+            ->with('error', 'Payment failed, please try again.');
     }
 }

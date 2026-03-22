@@ -1,27 +1,38 @@
-<x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-        {{ __('This is a secure area of the application. Please confirm your password before continuing.') }}
+<x-front-layout title="Confirm Password">
+
+    <!-- Start Account Confirm Password Area -->
+    <div class="account-login section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 offset-lg-3 col-md-10 offset-md-1 col-12">
+                    <form class="card login-form" action="{{ route('password.confirm') }}" method="post">
+                        @csrf
+                        <div class="card-body">
+                            <div class="title">
+                                <h3>Confirm Password</h3>
+                                <p>This is a secure area of the application. Please confirm your password before continuing.</p>
+                            </div>
+
+                            @if ($errors->has('password'))
+                                <div class="alert alert-danger">
+                                    {{ $errors->first('password') }}
+                                </div>
+                            @endif
+
+                            <div class="form-group input-group">
+                                <label for="reg-pass">Password</label>
+                                <input class="form-control" type="password" name="password" id="reg-pass" required autocomplete="current-password">
+                            </div>
+
+                            <div class="button mt-3">
+                                <button class="btn" type="submit">Confirm</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
+    <!-- End Account Confirm Password Area -->
 
-    <form method="POST" action="{{ route('password.confirm') }}">
-        @csrf
-
-        <!-- Password -->
-        <div>
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <div class="flex justify-end mt-4">
-            <x-primary-button>
-                {{ __('Confirm') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+</x-front-layout>

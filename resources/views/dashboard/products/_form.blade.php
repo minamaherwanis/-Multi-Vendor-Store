@@ -36,6 +36,9 @@
 <div class="form-group">
     <x-form.input label="Compare Price" name="compare_price" value="{{ $product->compare_price }}"  />
 </div>
+<div class="form-group">
+    <x-form.input label="Quantity" name="quantity" value="{{ $product->quantity ?? old('quantity') }}"  />
+</div>
 @php
     $tagsValue = old('tags') ?? ($product->tags ? $product->tags->pluck('name')->implode(',') : '');
 @endphp

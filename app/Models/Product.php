@@ -26,6 +26,7 @@ class Product extends Model
         'option',
         'featured',
         'status',
+        'quantity'
     ];
     protected $hidden = [
         'created_at',
@@ -100,6 +101,12 @@ static::creating(function (Product $product) {
         $builder->when($options['status'], function ($query, $status) {
             return $query->where('status', $status);
         });
+$builder->whereIn('store_id', function ($q) {
+    $q->select('store_id')
+      ->from('users')
+      ->whereNotNull('store_id');
+});          $builder->where('quantity', '>', 0);
+
     }
 
 

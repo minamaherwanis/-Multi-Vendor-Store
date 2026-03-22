@@ -10,12 +10,12 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Crypt;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
-use App\Concerns\HasRoles;
+// use App\Concerns\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
 
-    use HasFactory, Notifiable, TwoFactorAuthenticatable, HasApiTokens, HasRoles;
+    use HasFactory, Notifiable, TwoFactorAuthenticatable, HasApiTokens;
     protected $fillable = [
         'name',
         'email',
@@ -23,6 +23,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'provider',
         'provider_id',
         'provider_token',
+        'type',
+        'store_id',
     ];
 
 
@@ -46,7 +48,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne(Profile::class, 'user_id', 'id')->withDefault();
     }
-        public function setProviderTokenAttribute($value)
+    public function setProviderTokenAttribute($value)
     {
         $this->attributes['provider_token'] = Crypt::encryptString($value);
     }
