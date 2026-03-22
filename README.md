@@ -1,61 +1,87 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+🛠️ Core Laravel Features
 
-## About Laravel
+Architecture & Blade Templating: Layouts & Components for reusable code
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Database: Migrations, Seeders & Factories for data management
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+CRUD Operations: Resource Controllers & Routes
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+File Management: File Uploads & Filesystem
 
-## Learning Laravel
+Validation: Request Validation & Custom Rules
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+🔐 Authentication & Authorization
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Auth Scaffolding: Laravel Breeze & Fortify with Multi-Guard and 2FA
 
-## Laravel Sponsors
+Role-Based Access: Gates & Policies for user permissions
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Social Login: Google & Facebook via Laravel Socialite
 
-### Premium Partners
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+🗄️ Eloquent ORM (Advanced)
 
-## Contributing
+Relationships: HasMany, HasOne, BelongsToMany
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Scopes & Soft Deletes: Global & Local Scopes + Soft Deletes
 
-## Code of Conduct
+Optimized Queries: Pagination & Query Optimization
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-## Security Vulnerabilities
+🛍️ E-Commerce System
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Multi-Vendor System: each vendor has its own store
 
-## License
+Vendor Dashboard + Super Admin Dashboard
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Shopping Cart (Facade Pattern)
+
+Checkout & Orders Management
+
+Events & Listeners
+
+Notifications: Mail + Database + Realtime via Pusher
+
+Localization: Multi-Language Support
+
+
+🌐 API Development
+
+RESTful APIs + API Resources
+
+Authentication with Laravel Sanctum
+
+Integration with 3rd-Party APIs (e.g., Currency Converter)
+
+
+⚙️ Advanced Features (Custom Additions)
+
+Stripe Payment Integration — Visa fully functional
+
+Stripe Webhooks for payment events
+
+Super Admin Dashboard with full platform control
+
+Exception Handling
+
+Jobs, Queues & Task Scheduling
+
+Manual Deployment
+
+Live Order Tracking: Google Maps + Realtime via Pusher
+
+<img width="1920" height="972" alt="Screenshot 2026-03-20 163655" src="https://github.com/user-attachments/assets/86f561b1-5dc3-458f-96f0-c86dd419e423" />
+<img width="1920" height="912" alt="screencapture-localhost-super-admin-login-2026-03-20-16_57_29" src="https://github.com/user-attachments/assets/264fc3aa-9cfd-4d6d-b61b-5c9823abeae9" />
+<img width="1920" height="1240" alt="screencapture-localhost-super-admin-2026-03-20-16_57_48" src="https://github.com/user-attachments/assets/e9e99e0d-3a58-4a5a-af2a-9a27a595c1e5" />
+<img width="1920" height="1038" alt="screencapture-localhost-orders-251-2026-03-20-16_47_35" src="https://github.com/user-attachments/assets/0a677a1c-90f8-48fc-9ad3-ea5402401974" />
+<img width="1920" height="1294" alt="screencapture-localhost-login-2026-03-20-18_08_40" src="https://github.com/user-attachments/assets/640f3da8-3fb2-4293-ad99-8145aae83886" />
+<img width="1920" height="1207" alt="screencapture-localhost-checkout-2026-03-20-16_40_01" src="https://github.com/user-attachments/assets/901b9c06-75d7-48ec-9774-7c2965039c84" />
+<img width="1920" height="1288" alt="screencapture-localhost-cart-2026-03-20-16_37_55" src="https://github.com/user-attachments/assets/c9b456de-4f43-430a-9894-d4795d3158fc" />
+<img width="1920" height="861" alt="screencapture-localhost-admin-products-2026-03-20-16_55_09" src="https://github.com/user-attachments/assets/66b07850-6e30-490c-9504-f5614b73df87" />
+<img width="1920" height="641" alt="screencapture-localhost-admin-orders-2026-03-20-17_06_06" src="https://github.com/user-attachments/assets/2c2b141f-6e33-4657-accb-749a0b9ccc8e" />
+<img width="1920" height="1538" alt="screencapture-localhost-admin-orders-258-2026-03-20-17_06_21" src="https://github.com/user-attachments/assets/de39712b-f570-4b2f-92fb-30d2d2d4cde0" />
+<img width="1920" height="868" alt="screencapture-localhost-admin-dashboard-2026-03-20-16_54_38" src="https://github.com/user-attachments/assets/98f91b1c-b91d-46b9-bfb2-95322340acb5" />
+<img width="1920" height="906" alt="Screenshot 2026-03-20 164712" src="https://github.com/user-attachments/assets/637a98df-a43a-4c85-bbe6-75815da604cc" />
+
