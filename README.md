@@ -11,6 +11,7 @@ File Management: File Uploads & Filesystem
 
 Validation: Request Validation & Custom Rules
 
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 🔐 Authentication & Authorization
 
@@ -20,6 +21,7 @@ Role-Based Access: Gates & Policies for user permissions
 
 Social Login: Google & Facebook via Laravel Socialite
 
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 🗄️ Eloquent ORM (Advanced)
 
@@ -29,6 +31,7 @@ Scopes & Soft Deletes: Global & Local Scopes + Soft Deletes
 
 Optimized Queries: Pagination & Query Optimization
 
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 🛍️ E-Commerce System
 
@@ -46,6 +49,7 @@ Notifications: Mail + Database + Realtime via Pusher
 
 Localization: Multi-Language Support
 
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 🌐 API Development
 
@@ -55,6 +59,7 @@ Authentication with Laravel Sanctum
 
 Integration with 3rd-Party APIs (e.g., Currency Converter)
 
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 ⚙️ Advanced Features (Custom Additions)
 
